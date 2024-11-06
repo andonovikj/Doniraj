@@ -1,8 +1,8 @@
-package service.impl;
+package com.example.doniraj.service.impl;
 
 import org.springframework.stereotype.Service;
-import repository.UserRepository;
-import service.UserService;
+import com.example.doniraj.repository.UserRepository;
+import com.example.doniraj.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService {

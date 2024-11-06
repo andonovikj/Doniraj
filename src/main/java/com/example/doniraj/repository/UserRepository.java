@@ -1,4 +1,4 @@
-package repository;
+package com.example.doniraj.repository;
 
 import com.example.doniraj.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
