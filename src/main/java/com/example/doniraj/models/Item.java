@@ -1,16 +1,11 @@
-package models;
+package com.example.doniraj.models;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import models.enums.Status;
+import com.example.doniraj.models.enums.Status;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @Entity
-@Data
 public class Item {
 
     @Id

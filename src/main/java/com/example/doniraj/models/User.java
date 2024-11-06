@@ -1,14 +1,11 @@
-package models;
+package com.example.doniraj.models;
 
+import com.example.doniraj.models.enums.Role;
 import jakarta.persistence.*;
-import lombok.Data;
-import models.enums.Role;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
 @Table(name = "users")
 public class User {
 

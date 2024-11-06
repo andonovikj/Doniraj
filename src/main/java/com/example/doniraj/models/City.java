@@ -1,12 +1,10 @@
-package models;
+package com.example.doniraj.models;
 
 import jakarta.persistence.*;
-import lombok.Data;
 
 import java.util.List;
 
 @Entity
-@Data
 public class City {
 
     @Id
@@ -17,10 +15,10 @@ public class City {
 
     private Integer zipcode;
 
-    @OneToMany
+    @OneToMany(mappedBy = "city")
     private List<User> user;
 
-    @OneToMany
+    @OneToMany(mappedBy = "city")
     private List<Item> items;
 
     public City(Long city_id, String name, Integer zipcode) {

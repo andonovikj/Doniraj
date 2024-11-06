@@ -1,13 +1,10 @@
-package models;
+package com.example.doniraj.models;
 
 import jakarta.persistence.*;
-import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
-@Data
 public class Claim {
 
     @Id
