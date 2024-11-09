@@ -1,10 +1,14 @@
 package com.example.doniraj.models;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Entity
+@Data
+@NoArgsConstructor
 public class Claim {
 
     @Id
@@ -28,37 +32,5 @@ public class Claim {
         this.item = item;
     }
 
-    public Claim(){}
 
-    public Long getClaim_id() {
-        return claim_id;
-    }
-
-    public void setClaim_id(Long claim_id) {
-        this.claim_id = claim_id;
-    }
-
-    public LocalDate getClaimDate() {
-        return claimDate;
-    }
-
-    public void setClaimDate(LocalDate claimDate) {
-        this.claimDate = claimDate;
-    }
-
-    public User getRecipient() {
-        return recipient;
-    }
-
-    public void setRecipient(User recipient) {
-        this.recipient = recipient;
-    }
-
-    public Item getItem() {
-        return item;
-    }
-
-    public void setItem(Item item) {
-        this.item = item;
-    }
 }

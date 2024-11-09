@@ -2,10 +2,14 @@ package com.example.doniraj.models;
 
 import jakarta.persistence.*;
 import com.example.doniraj.models.enums.Status;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Entity
+@Data
+@NoArgsConstructor
 public class Item {
 
     @Id
@@ -28,7 +32,7 @@ public class Item {
     private User donor;
 
     @ManyToOne
-    @JoinColumn(name = "city_id")
+    @JoinColumn(name = "city_id", nullable = false)
     private City city;
 
     @OneToOne(mappedBy = "item", cascade = CascadeType.ALL)
@@ -55,71 +59,4 @@ public class Item {
         this.claim = claim;
     }
 
-    public Item() {
-
-    }
-
-    public Long getItem_id() {
-        return item_id;
-    }
-
-    public void setItem_id(Long item_id) {
-        this.item_id = item_id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public LocalDate getDate_created() {
-        return date_created;
-    }
-
-    public void setDate_created(LocalDate date_created) {
-        this.date_created = date_created;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    public User getDonor() {
-        return donor;
-    }
-
-    public void setDonor(User donor) {
-        this.donor = donor;
-    }
-
-    public City getCity() {
-        return city;
-    }
-
-    public void setCity(City city) {
-        this.city = city;
-    }
-
-    public Claim getClaim() {
-        return claim;
-    }
-
-    public void setClaim(Claim claim) {
-        this.claim = claim;
-    }
 }
