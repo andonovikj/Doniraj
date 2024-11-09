@@ -9,4 +9,10 @@ public interface UserService {
 
     User getById(Long id);
 
+    //register new user
+
+    //optional find methods
+
+    //update user
+
 }
