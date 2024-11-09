@@ -18,11 +18,11 @@ public class Claim {
     private LocalDate claimDate;
 
     @ManyToOne
-    @JoinColumn(name = "recipient", nullable = false)
+    @JoinColumn(name = "recipient")
     private User recipient;
 
     @OneToOne
-    @JoinColumn(name = "item_id", nullable = false)
+    @JoinColumn(name = "item_id")
     private Item item;
 
     public Claim(Long claim_id, LocalDate claimDate, User recipient, Item item) {

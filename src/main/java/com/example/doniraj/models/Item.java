@@ -1,5 +1,7 @@
 package com.example.doniraj.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import com.example.doniraj.models.enums.Status;
 import lombok.Data;
@@ -27,7 +29,7 @@ public class Item {
     @Enumerated(value = EnumType.STRING)
     private Status status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne//(fetch = FetchType.LAZY)
     @JoinColumn(name = "donor_id", nullable = false)
     private User donor;
 
@@ -35,20 +37,10 @@ public class Item {
     @JoinColumn(name = "city_id", nullable = false)
     private City city;
 
-    @OneToOne(mappedBy = "item", cascade = CascadeType.ALL)
-    private Claim claim;
+    //@OneToOne(mappedBy = "item")
+    //private Claim claim;
 
-    public Item(Long item_id, String name, String description, LocalDate date_created, User donor, City city) {
-        this.item_id = item_id;
-        this.name = name;
-        this.description = description;
-        this.date_created = date_created;
-        this.donor = donor;
-        this.city = city;
-
-    }
-
-    public Item(Long item_id, String name, String description, LocalDate date_created, Status status, User donor, City city, Claim claim) {
+    public Item(Long item_id, String name, String description, LocalDate date_created, Status status, User donor, City city) {
         this.item_id = item_id;
         this.name = name;
         this.description = description;
@@ -56,7 +48,14 @@ public class Item {
         this.status = status;
         this.donor = donor;
         this.city = city;
-        this.claim = claim;
     }
 
+    public Item(String name, String description, LocalDate date_created, Status status, User donor, City city) {
+        this.name = name;
+        this.description = description;
+        this.date_created = date_created;
+        this.status = status;
+        this.donor = donor;
+        this.city = city;
+    }
 }

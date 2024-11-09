@@ -1,5 +1,12 @@
 package com.example.doniraj.service;
 
+import com.example.doniraj.models.User;
+
+import java.util.List;
+
 public interface UserService {
-    String getUserDetails();
+    List<User> getUsers();
+
+    User getById(Long id);
+
 }

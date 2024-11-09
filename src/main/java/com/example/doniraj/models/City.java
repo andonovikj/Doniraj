@@ -20,12 +20,12 @@ public class City {
 
     private Integer zipcode;
 
-    //@OneToMany(fetch = FetchType.LAZY, mappedBy = "city")
-    //@JsonIgnore
-    //private List<User> user;
+    /*@OneToMany(fetch = FetchType.LAZY, mappedBy = "city")
+    private List<User> user;
 
-    //@OneToMany(mappedBy = "city")
-    //private List<Item> items;
+    @OneToMany(mappedBy = "city")
+    private List<Item> items;*/
+
 
     public City(Long city_id, String name, Integer zipcode) {
         this.city_id = city_id;

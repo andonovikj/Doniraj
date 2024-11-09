@@ -1,6 +1,8 @@
 package com.example.doniraj.models;
 
 import com.example.doniraj.models.enums.Role;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,11 +36,11 @@ public class User {
     @JoinColumn(name = "city_id")
     private City city;
 
-    @OneToMany(mappedBy = "donor", cascade = CascadeType.ALL)
-    private List<Item> donatedItems;
+    //@OneToMany(mappedBy = "donor", cascade = CascadeType.ALL)
+    //private List<Item> donatedItems;
 
-    @OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL)
-    private List<Claim> claims;
+    //@OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL)
+    //private List<Claim> claims;
 
     public User(Long user_id, String name, String email, String password, Integer phone_number, City city) {
         this.user_id = user_id;
@@ -49,7 +51,7 @@ public class User {
         this.city = city;
     }
 
-    public User(Long user_id, String name, String email, String password, Integer phone_number, Role role, City city, List<Item> donatedItems, List<Claim> claims) {
+    /*public User(Long user_id, String name, String email, String password, Integer phone_number, Role role, City city, List<Item> donatedItems, List<Claim> claims) {
         this.user_id = user_id;
         this.name = name;
         this.email = email;
@@ -60,5 +62,5 @@ public class User {
         this.donatedItems = donatedItems;
         this.claims = claims;
     }
-
+*/
 }
