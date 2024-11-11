@@ -1,5 +1,6 @@
 package com.example.doniraj.models;
 
+import com.example.doniraj.models.enums.ClaimStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,9 @@ public class Claim {
 
     private LocalDate claimDate;
 
+    @Enumerated
+    private ClaimStatus status;
+
     @ManyToOne
     @JoinColumn(name = "recipient")
     private User recipient;
@@ -25,12 +29,12 @@ public class Claim {
     @JoinColumn(name = "item_id")
     private Item item;
 
-    public Claim(Long claim_id, LocalDate claimDate, User recipient, Item item) {
-        this.claim_id = claim_id;
-        this.claimDate = claimDate;
+
+    public Claim(User recipient, Item item) {
+        this.claimDate = LocalDate.now();
         this.recipient = recipient;
+        this.status = ClaimStatus.CREATED;
         this.item = item;
     }
-
 
 }

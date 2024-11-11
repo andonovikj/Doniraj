@@ -4,6 +4,7 @@ import com.example.doniraj.models.City;
 import com.example.doniraj.models.DTO.ItemDto;
 import com.example.doniraj.models.Item;
 import com.example.doniraj.models.User;
+import com.example.doniraj.models.exception.InvalidCityIdException;
 import com.example.doniraj.models.exception.InvalidItemIdException;
 import com.example.doniraj.repository.CityRepository;
 import com.example.doniraj.service.CityService;
@@ -41,7 +42,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public Item getById(Long item_id) {
-        return itemRepository.findById(item_id).orElseThrow(InvalidItemIdException:: new);
+        return itemRepository.findById(item_id).orElseThrow(() -> new InvalidCityIdException(item_id));
     }
 
     @Override
@@ -57,7 +58,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public Item updateItem(Long id, ItemDto itemdto) {
-        Item item = itemRepository.findById(id).orElseThrow(InvalidItemIdException :: new);
+        Item item = itemRepository.findById(id).orElseThrow(() -> new InvalidCityIdException(id));
 
         item.setName(itemdto.getName());
         item.setDescription(item.getDescription());
@@ -76,7 +77,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public Item deleteItem(Long id) {
-        Item item = itemRepository.findById(id).orElseThrow(InvalidItemIdException :: new);
+        Item item = itemRepository.findById(id).orElseThrow(() -> new InvalidCityIdException(id));
         itemRepository.delete(item);
         return item;
     }

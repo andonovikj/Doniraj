@@ -1,6 +1,6 @@
 package com.example.doniraj.models.enums;
 
-public enum Status {
+public enum ItemStatus {
     AVAILABLE,
     CLAIMED
 }

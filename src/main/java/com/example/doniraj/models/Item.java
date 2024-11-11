@@ -1,9 +1,9 @@
 package com.example.doniraj.models;
 
+import com.example.doniraj.models.enums.ItemStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import com.example.doniraj.models.enums.Status;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -27,7 +27,7 @@ public class Item {
     //private String imageUrl;
 
     @Enumerated(value = EnumType.STRING)
-    private Status status;
+    private ItemStatus status;
 
     @ManyToOne//(fetch = FetchType.LAZY)
     @JoinColumn(name = "donor_id", nullable = false)
@@ -40,20 +40,10 @@ public class Item {
     //@OneToOne(mappedBy = "item")
     //private Claim claim;
 
-    public Item(Long item_id, String name, String description, LocalDate date_created, Status status, User donor, City city) {
-        this.item_id = item_id;
+    public Item(String name, String description, LocalDate date_created, ItemStatus status, User donor, City city) {
         this.name = name;
         this.description = description;
-        this.date_created = date_created;
-        this.status = status;
-        this.donor = donor;
-        this.city = city;
-    }
-
-    public Item(String name, String description, LocalDate date_created, Status status, User donor, City city) {
-        this.name = name;
-        this.description = description;
-        this.date_created = date_created;
+        this.date_created = LocalDate.now();
         this.status = status;
         this.donor = donor;
         this.city = city;

@@ -1,6 +1,7 @@
 package com.example.doniraj.service.impl;
 
 import com.example.doniraj.models.User;
+import com.example.doniraj.models.exception.InvalidCityIdException;
 import com.example.doniraj.models.exception.InvalidUserIdException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getById(Long id) {
-        return userRepository.findById(id).orElseThrow(InvalidUserIdException:: new);
+        return userRepository.findById(id).orElseThrow(() -> new InvalidCityIdException(id));
     }
 }

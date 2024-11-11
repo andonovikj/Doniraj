@@ -28,7 +28,7 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public City getById(Long city_id) {
-        return cityRepository.findById(city_id).orElseThrow(InvalidCityIdException :: new);
+        return cityRepository.findById(city_id).orElseThrow(() -> new InvalidCityIdException(city_id));
     }
 
     @Override
@@ -39,7 +39,7 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public City updateCity(Long city_id, String name, Integer zipcode) {
-        City city = cityRepository.findById(city_id).orElseThrow(InvalidCityIdException :: new);
+        City city = cityRepository.findById(city_id).orElseThrow(() -> new InvalidCityIdException(city_id));
 
         city.setName(name);
         city.setZipcode(zipcode);
@@ -49,7 +49,7 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public City deleteCity(Long city_id) {
-        City city = cityRepository.findById(city_id).orElseThrow(InvalidCityIdException :: new);
+        City city = cityRepository.findById(city_id).orElseThrow(() -> new InvalidCityIdException(city_id));
         cityRepository.deleteById(city_id);
         return city;
     }

@@ -1,7 +1,7 @@
 package com.example.doniraj.models.DTO;
 
 import com.example.doniraj.models.City;
-import com.example.doniraj.models.enums.Status;
+import com.example.doniraj.models.enums.ItemStatus;
 import lombok.Data;
 
 @Data
@@ -10,7 +10,7 @@ public class ItemDto {
 
     private String description;
 
-    private Status status;
+    private ItemStatus status;
 
     private Long city_id;
 

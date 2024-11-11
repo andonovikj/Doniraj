@@ -44,8 +44,8 @@ public class ItemController {
     }
     /*{
         "item_id": 7,
-        "name": "novo",
-        "description": "novoooo yasss slayyyy",
+        "name": "new test name",
+        "description": "new test description0",
         "status": "AVAILABLE",
         "city_id": 1,
         "user_id": 2
