@@ -1,14 +1,15 @@
 package com.example.doniraj.web;
 
+import com.example.doniraj.models.DTO.UserDto;
 import com.example.doniraj.models.User;
 import com.example.doniraj.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,13 +17,14 @@ import java.util.List;
 @RequestMapping("/api/user")
 public class UserController {
 
-    private final UserService userService;
-
     @Autowired
+    private final UserService userService;
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
+    // The @PreAuthorize annotation checks the given expression before entering the method
+    //@PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/all")
     public ResponseEntity<?> getALl(){
         List<User> users = userService.getUsers();
@@ -32,10 +34,50 @@ public class UserController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
+    //@PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id)
     {
         return new ResponseEntity<>(userService.getById(id), HttpStatus.OK);
     }
 
+    // Register User already exists
+//    //@PreAuthorize("hasRole('ADMIN')")
+//    @PostMapping("/create")
+//    public ResponseEntity<?> createUser(@RequestBody UserDto userdto){
+//        return new ResponseEntity<>(userService.create(userdto), HttpStatus.CREATED);
+//    }
+
+    //@PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserDto userDto){
+        return new ResponseEntity<>(userService.update(id, userDto), HttpStatus.OK);
+    }
+
+    //@PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable Long id){
+        return new ResponseEntity<>(userService.delete(id), HttpStatus.OK);
+    }
+    /*
+    {
+        "name": "Test",
+        "password": "passwordtest",
+        "email": "test@gmail.com",
+        "phone_number": 123456,
+        "city_id": 3,
+        "role": "ROLE_DONOR"
+    }
+     */
+    @PostMapping("/register")
+    public ResponseEntity<?> registerUser(@RequestBody UserDto userDto)
+    {
+        return new ResponseEntity<>(userService.register(userDto), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(@RequestBody UserDetails userDetails)
+    {
+        return new ResponseEntity<>(userService.login(userDetails), HttpStatus.OK);
+    }
 }
