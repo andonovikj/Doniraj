@@ -42,6 +42,10 @@ public class ClaimServiceImpl implements ClaimService {
         return claimRepository.findById(id).orElseThrow(() -> new InvalidClaimIdException(id));
     }
 
+    public List<Claim> getClaims(){
+        return claimRepository.findAll();
+    }
+
     @Override
     public List<Claim> getClaimsByRecipient(Long recipient_id) {
 
@@ -69,7 +73,7 @@ public class ClaimServiceImpl implements ClaimService {
         if (item.getDonor().equals(recipient)) {
             throw new IllegalArgumentException("Donor cannot claim their own item");
         }
-        Claim claim = new Claim(recipient, item);
+        Claim claim = new Claim(recipient, item, ClaimStatus.CREATED);
 //        claim.setClaimDate(LocalDate.now());
 //        claim.setRecipient(recipient);
 //        claim.setItem(item);

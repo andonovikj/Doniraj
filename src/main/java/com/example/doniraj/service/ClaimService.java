@@ -12,6 +12,8 @@ public interface ClaimService {
 
     //List<Claim> getClaimsByDonor(Long donor_id);
 
+    List<Claim> getClaims();
+
     List<Claim> getClaimsByRecipient(Long recipient_id);
 
     Claim claimItem(Long recipient_id, Long item_id);

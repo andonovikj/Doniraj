@@ -61,7 +61,7 @@ public class ItemServiceImpl implements ItemService {
         Item item = itemRepository.findById(id).orElseThrow(() -> new InvalidCityIdException(id));
 
         item.setName(itemdto.getName());
-        item.setDescription(item.getDescription());
+        item.setDescription(itemdto.getDescription());
         item.setStatus(itemdto.getStatus());
         item.setDate_created(LocalDate.now());
         City city = cityService.getById(itemdto.getCity_id());

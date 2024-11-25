@@ -42,14 +42,15 @@ public class ItemController {
     public ResponseEntity<?> createItem(@RequestBody ItemDto itemdto){
         return new ResponseEntity<>(itemService.createItem(itemdto), HttpStatus.CREATED);
     }
-    /*{
-        "item_id": 7,
-        "name": "new test name",
-        "description": "new test description0",
+    /*
+    {
+        "name": "Test Item Name",
+        "description": "New Test Description",
         "status": "AVAILABLE",
         "city_id": 1,
         "user_id": 2
-    }*/
+    }
+    */
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateItem(@PathVariable Long id, @RequestBody ItemDto itemdto){
         return new ResponseEntity<>(itemService.updateItem(id, itemdto), HttpStatus.OK);

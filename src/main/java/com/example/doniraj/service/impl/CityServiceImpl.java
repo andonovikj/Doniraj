@@ -1,12 +1,14 @@
 package com.example.doniraj.service.impl;
 
 import com.example.doniraj.models.City;
+import com.example.doniraj.models.DTO.CityDto;
 import com.example.doniraj.models.exception.InvalidCityIdException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.doniraj.repository.CityRepository;
 import com.example.doniraj.service.CityService;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -32,17 +34,17 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public City createCity(City city) {
-        //City city = new City(name, zipcode);
+    public City createCity(CityDto cityDto) {
+        City city = new City(cityDto.getName(), cityDto.getZipcode());
         return cityRepository.save(city);
     }
 
     @Override
-    public City updateCity(Long city_id, String name, Integer zipcode) {
+    public City updateCity(Long city_id, @RequestBody CityDto cityDto) {
         City city = cityRepository.findById(city_id).orElseThrow(() -> new InvalidCityIdException(city_id));
 
-        city.setName(name);
-        city.setZipcode(zipcode);
+        city.setName(cityDto.getName());
+        city.setZipcode(cityDto.getZipcode());
 
         return cityRepository.save(city);
     }

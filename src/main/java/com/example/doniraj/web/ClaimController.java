@@ -20,9 +20,13 @@ public class ClaimController {
         this.claimService = claimService;
     }
 
-    //www.localhost:8080/api/claim/all?recipient_id=2
     @GetMapping("/all")
-    public ResponseEntity<?> getClaims(@RequestParam Long recipient_id){
+    public ResponseEntity<?> getClaims(){
+        return new ResponseEntity<>(claimService.getClaims(), HttpStatus.OK);
+    }
+
+    @GetMapping("/all/{recipient_id}")
+    public ResponseEntity<?> getClaimsByRecipient(@PathVariable Long recipient_id){
         List<Claim> claims = claimService.getClaimsByRecipient(recipient_id);
         if (claims.isEmpty())
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

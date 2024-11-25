@@ -24,7 +24,7 @@ VALUES ('2024-11-03', 2, 3, 2, 'A red cozy blanket', 'Blanket', 'CLAIMED');
 INSERT INTO item (date_created, city_id, donor_id, item_id, description, name, status)
 VALUES ('2024-11-01', 1, 1, 3, 'Comfortable baby boots', 'Boots', 'CLAIMED');
 
-INSERT INTO claim (claim_date, claim_id, item_id, recipient)
-VALUES ('2024-11-06', 1, 2, 2);
-INSERT INTO claim (claim_date, claim_id, item_id, recipient)
-VALUES ('2024-11-09', 2, 3, 2);
+INSERT INTO claim (claim_date, status, claim_id, item_id, recipient)
+VALUES ('2024-11-06', 'CREATED', 1, 2, 2);
+INSERT INTO claim (claim_date, status, claim_id, item_id, recipient)
+VALUES ('2024-11-09', 'FINISHED', 2, 3, 2);

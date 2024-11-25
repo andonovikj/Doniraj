@@ -18,7 +18,7 @@ public class Claim {
 
     private LocalDate claimDate;
 
-    @Enumerated
+    @Enumerated(value = EnumType.STRING)
     private ClaimStatus status;
 
     @ManyToOne
@@ -30,10 +30,10 @@ public class Claim {
     private Item item;
 
 
-    public Claim(User recipient, Item item) {
+    public Claim(User recipient, Item item, ClaimStatus status) {
         this.claimDate = LocalDate.now();
         this.recipient = recipient;
-        this.status = ClaimStatus.CREATED;
+        this.status = status;
         this.item = item;
     }
 

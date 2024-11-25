@@ -1,6 +1,7 @@
 package com.example.doniraj.web;
 
 import com.example.doniraj.models.City;
+import com.example.doniraj.models.DTO.CityDto;
 import com.example.doniraj.service.CityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,16 +38,15 @@ public class CityController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> createCity(@RequestBody City city) {
-        City newCity = cityService.createCity(city);
+    public ResponseEntity<?> createCity(@RequestBody CityDto cityDto) {
+        City newCity = cityService.createCity(cityDto);
         return new ResponseEntity<>(newCity, HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateCity(@PathVariable Long id,
-                                        @RequestParam String name,
-                                        @RequestParam Integer zipcode) {
-        City updatedCity = cityService.updateCity(id, name, zipcode);
+                                        @RequestBody CityDto cityDto) {
+        City updatedCity = cityService.updateCity(id, cityDto);
 
         return new ResponseEntity<>(updatedCity, HttpStatus.OK);
     }

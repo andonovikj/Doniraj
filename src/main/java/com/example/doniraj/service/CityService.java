@@ -11,9 +11,9 @@ public interface CityService {
 
     City getById(Long city_id);
 
-    City createCity(City city);
+    City createCity(CityDto cityDto);
 
-    City updateCity(Long city_id, String name, Integer zipcode);
+    City updateCity(Long city_id, CityDto cityDto);
 
     City deleteCity(Long id);
 
