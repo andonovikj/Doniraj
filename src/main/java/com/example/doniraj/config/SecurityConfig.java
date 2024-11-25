@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.header.writers.XXssProtectionHeaderWriter;
 
 @Configuration
 @EnableWebSecurity
@@ -43,6 +44,15 @@ public class SecurityConfig {
                         .deleteCookies("JSESSIONID")
                         .logoutSuccessUrl("/")
                 );
+        http.headers(headers ->
+                headers.xssProtection( // xxsProtection configures the X-XSS-Protection HTTP response header to prevent reflected XSS attacks
+                        // If malicious content is detected, the browser blocks the page instead of rendering it
+                        xss -> xss.headerValue(XXssProtectionHeaderWriter.HeaderValue.ENABLED_MODE_BLOCK) // Enables the browser's built-in XSS filter
+                ).contentSecurityPolicy( // Adds the Content-Security-Policy (CSP) header to control allowed resources (like scripts)
+                        cps -> cps.policyDirectives("script-src 'self'") // Allow JavaScript only from the same domain as the application
+                        // Blocks inline scripts or scripts from untrusted sources
+                )
+        );
 
         return http.build();
     }
