@@ -29,7 +29,9 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable) // Disable CSRF for simplicity (enable it in production with proper configuration)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/user/**").hasRole("ADMIN") // Only ADMIN can access /user/** endpoints
-                        .requestMatchers("/", "/login", "/register", "/items/**").permitAll() // Public access endpoints
+                        // TODO: REMOVE THIS BYPASS LINE AFTER IMPLEMENTING AND TESTING UI
+                        .requestMatchers("/*").permitAll()
+                        //.requestMatchers("/", "/login", "/register", "/items/**").permitAll() // Public access endpoints
                         .anyRequest().authenticated() // All other requests require authentication
                 )
                 .formLogin((form) -> form
@@ -38,7 +40,7 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/", true)
                 )
                 .logout((logout) -> logout
-                        .logoutUrl("/logout")
+                        .logoutUrl("/api/user/logout")
                         .clearAuthentication(true)
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")

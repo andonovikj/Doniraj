@@ -8,11 +8,15 @@ import com.example.doniraj.models.exception.InvalidUserIdException;
 import com.example.doniraj.models.exception.InvalidUsernameOrPasswordException;
 import com.example.doniraj.models.exception.UsernameAlreadyExistsException;
 import com.example.doniraj.service.CityService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
 import com.example.doniraj.repository.UserRepository;
 import com.example.doniraj.service.UserService;
@@ -107,6 +111,14 @@ public class UserServiceImpl implements UserService {
 
         return userRepository.findByNameAndPassword(userDetails.getUsername(), userDetails.getPassword())
                 .orElseThrow(InvalidUsernameOrPasswordException::new);
+    }
+
+    @Override
+    public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication){
+        // Clear the SecurityContext for the current user.
+        // Destroy the user’s session, ensuring their data isn't cached on the server.
+        SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
+        logoutHandler.logout(request, response, authentication);
     }
 
     @Override

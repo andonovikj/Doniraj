@@ -3,11 +3,16 @@ package com.example.doniraj.web;
 import com.example.doniraj.models.DTO.UserDto;
 import com.example.doniraj.models.User;
 import com.example.doniraj.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
@@ -79,5 +84,19 @@ public class UserController {
     public ResponseEntity<?> loginUser(@RequestBody UserDetails userDetails)
     {
         return new ResponseEntity<>(userService.login(userDetails), HttpStatus.OK);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logoutUser(HttpServletRequest request, HttpServletResponse response)
+    {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        // Spring Security treats even anonymous users as "authenticated" if the anonymous feature is enabled.
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            return new ResponseEntity<>("User not logged in", HttpStatus.BAD_REQUEST);
+        }
+
+        userService.logout(request, response, authentication);
+        return new ResponseEntity<>("Logout successful", HttpStatus.OK);
     }
 }
