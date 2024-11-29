@@ -11,6 +11,8 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.header.writers.XXssProtectionHeaderWriter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
@@ -28,11 +30,11 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable) // Disable CSRF for simplicity (enable it in production with proper configuration)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/user/**").hasRole("ADMIN") // Only ADMIN can access /user/** endpoints
+                        //.requestMatchers("/api/user/**").hasRole("ADMIN") // Only ADMIN can access /user/** endpoints
                         // TODO: REMOVE THIS BYPASS LINE AFTER IMPLEMENTING AND TESTING UI
-                        .requestMatchers("/*").permitAll()
+                        .requestMatchers("/**").permitAll()
                         //.requestMatchers("/", "/login", "/register", "/items/**").permitAll() // Public access endpoints
-                        .anyRequest().authenticated() // All other requests require authentication
+                        //.anyRequest().authenticated() // All other requests require authentication
                 )
                 .formLogin((form) -> form
                         .permitAll()
@@ -57,6 +59,20 @@ public class SecurityConfig {
         );
 
         return http.build();
+    }
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("http://localhost:3000")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
+            }
+        };
     }
 
     // AuthenticationManager Bean, a core component in Spring Security that handles authentication requests
