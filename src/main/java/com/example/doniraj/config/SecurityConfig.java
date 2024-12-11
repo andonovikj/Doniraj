@@ -48,6 +48,7 @@ public class SecurityConfig {
                         .deleteCookies("JSESSIONID")
                         .logoutSuccessUrl("/")
                 );
+        //TODO LOOK INTO STORED XSS ATTACK
         http.headers(headers ->
                 headers.xssProtection( // xxsProtection configures the X-XSS-Protection HTTP response header to prevent reflected XSS attacks
                         // If malicious content is detected, the browser blocks the page instead of rendering it
