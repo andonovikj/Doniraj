@@ -1,6 +1,7 @@
 import React, {Component, useEffect, useState} from 'react';
 import {Button, ButtonGroup, Container} from "reactstrap";
-import {getCities} from "../../services/CityService";
+import {deleteCity, getCities, getCity} from "../../services/CityService";
+import { useNavigate } from "react-router-dom";
 
 const CityListComponent = () => {
 
@@ -41,15 +42,47 @@ const CityListComponent = () => {
 
     const [cities, setCities] = useState([]);
 
-    useEffect(() => {
-        getCities().then((response) => {
-            setCities(response.data);
-        }).catch(error => {
-            console.log(error)
-        })
+    const navigator = useNavigate();
+
+    useEffect( () => {
+        getAllCities();
 
     }, []) // Empty dependency array ([]) to ensure the data fetch runs only once when the component is mounted
 
+    function getAllCities(){
+        getCities().then((response) => {
+            setCities(response.data);
+        }).catch(error => {
+            console.log(error);
+        })
+    }
+
+    function viewCity(id){
+        console.log("view city ", id);
+        navigator(`/city/${id}`)
+    }
+
+    function addNewCity(){
+        navigator('/city/add');
+    }
+
+    function editCity(id) {
+        console.log("hello from edit city in citylist component")
+        navigator(`/city/update/${id}`);
+    }
+
+    function removeCity(id) {
+        console.log("removed city");
+        deleteCity(id).then((response) => {
+            getAllCities();
+        }).catch(error => {
+            console.log(error);
+        })
+    }
+
+    // TODO: why can't functions be async?
+    // TODO: consistency with async await
+    //function deleteCity = async (id) => { }
         return (
             <div>
                 <h1 className = "text-center">Cities List</h1>
@@ -57,7 +90,7 @@ const CityListComponent = () => {
 
                 <Container fluid>
                     <div className="float-right">
-                        <Button color="success" to="/api/city/add">Add City</Button>
+                        <Button color="success" onClick={addNewCity}>Add City</Button>
                     </div>
                 </Container>
                 <table className = "table table-striped">
@@ -67,6 +100,7 @@ const CityListComponent = () => {
                         <td> City Id</td>
                         <td> City Name</td>
                         <td> City Zipcode</td>
+                        <td> Actions </td>
                     </tr>
 
                     </thead>
@@ -80,9 +114,9 @@ const CityListComponent = () => {
                                         <td> {city.zipcode}</td>
                                         <td>
                                             <ButtonGroup>
-                                                <Button size="sm" color="primary" >View</Button>
-                                                <Button size="sm" color="secondary" >Edit</Button>
-                                                <Button size="sm" color="danger" >Delete</Button>
+                                                <Button size="sm" color="primary" className="m-1" onClick={() => viewCity(city.city_id)}>View</Button>
+                                                <Button size="sm" color="secondary" className="m-1" onClick={() => editCity(city.city_id)} >Edit</Button>
+                                                <Button size="sm" color="danger" className="m-1" onClick={() => removeCity(city.city_id)}>Delete</Button>
                                             </ButtonGroup>
                                         </td>
                                     </tr>

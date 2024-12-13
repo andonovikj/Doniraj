@@ -14,4 +14,14 @@ import instance from './axiosConfig';
         return await instance.get(`/city/${id}`);
     }
 
+    export const createCity = async (city) => {
+        return await instance.post('/city/add', city);
+    }
+
+    export const updateCity = async (id, city) => {
+        console.log("hello from city service updateCity")
+        return await instance.put(`/city/update/${id}`, city);
+    }
+
+
 

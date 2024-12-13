@@ -5,6 +5,7 @@ import {BrowserRouter, Routes, Route} from "react-router-dom";
 import CityDetailsComponent from "./components/city/CityDetailsComponent";
 import HeaderComponent from "./components/HeaderComponent";
 import FooterComponent from "./components/FooterComponent";
+import CityComponent from "./components/city/CityComponent";
 
 class App extends Component {
 
@@ -19,12 +20,27 @@ class App extends Component {
                     <Routes>
                         <Route
                             path="/"
-                            element={ <CityListComponent /> }>
+                            element={ <CityListComponent /> } >
                         </Route>
 
                         <Route
                             path="/cities"
-                            element={ <CityListComponent /> }>
+                            element={ <CityListComponent /> } >
+                        </Route>
+
+                        <Route
+                            path="/city/add"
+                            element={ <CityComponent /> } >
+                        </Route>
+
+                        <Route
+                            path="/city/update/:id"
+                            element={ <CityComponent /> } >
+                        </Route>
+
+                        <Route
+                            path="/city/:id"
+                            element={ <CityDetailsComponent/> } >
                         </Route>
 
                     </Routes>
