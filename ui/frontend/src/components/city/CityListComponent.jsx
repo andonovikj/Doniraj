@@ -5,42 +5,9 @@ import { useNavigate } from "react-router-dom";
 
 const CityListComponent = () => {
 
-    /* class component
- The constructor () is invoked before the component is mounted
-    constructor(props){
-        super(props) // one-way data bind
-        this.state = { // add cities to the state of the component (make them available) to display them
-            cities:[] // state variable
-        }
-        this.remove = this.remove.bind(this); // delete
-    }
-    // Use componentDidMount to fetch data after the component mounts
-    async componentDidMount(){
-        CityService.getCities().then((response) => {
-            this.setState({ cities: response.data}) // Update state with the fetched data
-        });
-    }
-
-    async remove(id) {
-        if (!id) {
-            console.error("Invalid ID for deletion:", id);
-            return;
-        }
-        await CityService.deleteCity(id)
-            .then(response => {
-                console.log("City deleted successfully:", response.data);
-            })
-            .catch(error => {
-                console.error("Error deleting city:", error.response);
-            });
-
-        let updatedCities = [...this.state.cities].filter(i => i.id !== id);
-        this.setState({cities: updatedCities});
-
-    }
-     */
-
     const [cities, setCities] = useState([]);
+
+    const [newCityId, setNewCityId] = useState([]);
 
     const navigator = useNavigate();
 
@@ -71,18 +38,16 @@ const CityListComponent = () => {
         navigator(`/city/update/${id}`);
     }
 
-    function removeCity(id) {
+    function removeCity(id, newCityId) {
         console.log("removed city");
-        deleteCity(id).then((response) => {
+        deleteCity(id, newCityId).then((response) => {
             getAllCities();
         }).catch(error => {
             console.log(error);
         })
     }
 
-    // TODO: why can't functions be async?
     // TODO: consistency with async await
-    //function deleteCity = async (id) => { }
         return (
             <div>
                 <h1 className = "text-center">Cities List</h1>
@@ -116,7 +81,16 @@ const CityListComponent = () => {
                                             <ButtonGroup>
                                                 <Button size="sm" color="primary" className="m-1" onClick={() => viewCity(city.city_id)}>View</Button>
                                                 <Button size="sm" color="secondary" className="m-1" onClick={() => editCity(city.city_id)} >Edit</Button>
-                                                <Button size="sm" color="danger" className="m-1" onClick={() => removeCity(city.city_id)}>Delete</Button>
+                                                <div>
+                                                    <label>Select new city for items:</label>
+                                                    <select onChange={(e) => setNewCityId(e.target.value)}>
+                                                        <option value="">-- Select City --</option>
+                                                        {cities.map(city => (
+                                                            <option key={city.city_id} value={city.city_id}>{city.name}</option>
+                                                        ))}
+                                                    </select>
+                                                    <Button size="sm" color="danger" className="m-1" onClick={() => removeCity(city.city_id, newCityId)}>Delete</Button>
+                                                </div>
                                             </ButtonGroup>
                                         </td>
                                     </tr>

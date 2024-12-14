@@ -5,9 +5,8 @@ import instance from './axiosConfig';
         return await instance.get(`/city/all`);
     }
 
-    //TODO: FIX BUG FK CONSTRAINT VIOLATION FOR USER AND ITEM TABLES. ASK ADMIN IN A FORM FOR TARGETED CITY :((
-    export const deleteCity = async (id) => {
-        return await instance.delete(`/city/delete/${id}`);
+    export const deleteCity = async (id, newCityId) => {
+        return await instance.delete(`/city/delete/${id}`, { params: { newCityId }});
     }
 
     export const getCity = async (id) => {
