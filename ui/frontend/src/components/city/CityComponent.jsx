@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import {create} from "axios";
 import {createCity, getCity, updateCity} from "../../services/CityService";
 import {useNavigate, useParams} from "react-router-dom";
 
@@ -23,14 +22,12 @@ const CityComponent = () => {
 
     useEffect(() => {
         if (id) {
-
             getCity(id).then((response) => {
                 setName(response.data.name);
                 setZipcode(response.data.zipcode);
             }).catch(error => {
                 console.log(error);
             });
-
         }
     }, [id])
 
@@ -125,7 +122,6 @@ const CityComponent = () => {
                                 </input>
                                 { errors.zipcode && <div className="invalid-feedback">{ errors.zipcode }</div> }
                             </div>
-
                             <button className='btn btn-success' onClick={saveOrUpdateCity}>Submit</button>
                         </form>
                     </div>

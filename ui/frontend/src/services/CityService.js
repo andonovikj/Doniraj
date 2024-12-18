@@ -18,7 +18,6 @@ import instance from './axiosConfig';
     }
 
     export const updateCity = async (id, city) => {
-        console.log("hello from city service updateCity")
         return await instance.put(`/city/update/${id}`, city);
     }
 

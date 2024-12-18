@@ -1,56 +1,20 @@
 import './App.css';
-import { Component } from "react";
-import CityListComponent from "./components/city/CityListComponent";
-import {BrowserRouter, Routes, Route} from "react-router-dom";
-import CityDetailsComponent from "./components/city/CityDetailsComponent";
+import React, { Component } from "react";
 import HeaderComponent from "./components/HeaderComponent";
 import FooterComponent from "./components/FooterComponent";
-import CityComponent from "./components/city/CityComponent";
+import ApplicationRouting from "./ApplicationRoutes"
 
 class App extends Component {
-
 
   render() {
 
     return (
         <>
-            <BrowserRouter>
+            <HeaderComponent />
 
-                <HeaderComponent />
-                    <Routes>
-                        <Route
-                            path="/"
-                            element={ <CityListComponent /> } >
-                        </Route>
+            <ApplicationRouting />
 
-                        <Route
-                            path="/cities"
-                            element={ <CityListComponent /> } >
-                        </Route>
-
-                        <Route
-                            path="/city/add"
-                            element={ <CityComponent /> } >
-                        </Route>
-
-                        <Route
-                            path="/city/update/:id"
-                            element={ <CityComponent /> } >
-                        </Route>
-
-                        <Route
-                            path="/city/:id"
-                            element={ <CityDetailsComponent/> } >
-                        </Route>
-
-                    </Routes>
-
-
-                    {/*<CityDetailsComponent />*/}
-
-                <FooterComponent />
-
-            </BrowserRouter>
+            <FooterComponent />
         </>
     );
   }

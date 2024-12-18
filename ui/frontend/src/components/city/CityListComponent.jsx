@@ -7,7 +7,7 @@ const CityListComponent = () => {
 
     const [cities, setCities] = useState([]);
 
-    const [newCityId, setNewCityId] = useState([]);
+    const [newCityId, setNewCityId] = useState(null);
 
     const navigator = useNavigate();
 
@@ -34,13 +34,13 @@ const CityListComponent = () => {
     }
 
     function editCity(id) {
-        console.log("hello from edit city in citylist component")
         navigator(`/city/update/${id}`);
     }
 
     function removeCity(id, newCityId) {
         console.log("removed city");
-        deleteCity(id, newCityId).then((response) => {
+        const params = newCityId ? { newCityId } : {};
+        deleteCity(id, params).then((response) => {
             getAllCities();
         }).catch(error => {
             console.log(error);

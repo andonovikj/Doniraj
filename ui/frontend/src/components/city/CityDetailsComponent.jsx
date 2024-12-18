@@ -16,9 +16,7 @@ const CityDetailsComponent = () =>  {
             console.log(error);
         }, [id])
         }
-
     )
-
 
     return (
         <div>
