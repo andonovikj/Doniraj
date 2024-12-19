@@ -38,6 +38,7 @@ public class Item {
 
     @ManyToOne
     @JoinColumn(name = "city_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private City city;
 
     //@OneToOne(mappedBy = "item")

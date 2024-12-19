@@ -7,6 +7,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -39,6 +41,7 @@ public class User implements UserDetails{ // TODO: CREATE SEPARATE CLASS MYUSERD
 
     @ManyToOne
     @JoinColumn(name = "city_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private City city;
 
     //@OneToMany(mappedBy = "donor", cascade = CascadeType.ALL)

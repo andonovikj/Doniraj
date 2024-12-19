@@ -4,6 +4,8 @@ import com.example.doniraj.models.enums.ClaimStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 
@@ -21,12 +23,14 @@ public class Claim {
     @Enumerated(value = EnumType.STRING)
     private ClaimStatus status;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "recipient")
+    @ManyToOne
+    @JoinColumn(name = "recipient", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User recipient;
 
     @OneToOne
     @JoinColumn(name = "item_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Item item;
 
 
