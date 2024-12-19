@@ -6,6 +6,9 @@ import React from "react";
 import UserListComponent from "./components/user/UserListComponent";
 import UserDetailsComponent from "./components/user/UserDetailsComponent";
 import UserComponent from "./components/user/UserComponent";
+import ItemListComponent from "./components/item/ItemListComponent";
+import ItemComponent from "./components/item/ItemComponent";
+import ItemDetailsComponent from "./components/item/ItemDetailsComponent";
 
 const ApplicationRouting = () => {
 return (
@@ -56,6 +59,28 @@ return (
             <Route
                 path="/user/update/:id"
                 element={<UserComponent/> }>
+            </Route>
+
+            {/* ---------------------- ITEM ROUTES ---------------------- */}
+
+            <Route
+                path="/items"
+                element={ <ItemListComponent/> }
+            ></Route>
+
+            <Route
+                path="/item/update/:id"
+                element={<ItemComponent/> }>
+            </Route>
+
+            <Route
+                path="/item/add"
+                element={<ItemComponent/> }>
+            </Route>
+
+            <Route
+                path="/item/:id"
+                element={<ItemDetailsComponent/> }>
             </Route>
 
         </Routes>
