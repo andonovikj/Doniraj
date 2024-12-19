@@ -21,7 +21,7 @@ public class Claim {
     @Enumerated(value = EnumType.STRING)
     private ClaimStatus status;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "recipient")
     private User recipient;
 

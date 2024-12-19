@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 
@@ -31,6 +33,7 @@ public class Item {
 
     @ManyToOne//(fetch = FetchType.LAZY)
     @JoinColumn(name = "donor_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User donor;
 
     @ManyToOne

@@ -2,7 +2,12 @@ package com.example.doniraj.service.impl;
 
 import com.example.doniraj.models.City;
 import com.example.doniraj.models.DTO.CityDto;
+import com.example.doniraj.models.Item;
+import com.example.doniraj.models.User;
 import com.example.doniraj.models.exception.InvalidCityIdException;
+import com.example.doniraj.repository.UserRepository;
+import com.example.doniraj.service.ItemCityService;
+import com.example.doniraj.service.UserCityService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,11 +21,20 @@ import java.util.List;
 @Transactional
 public class CityServiceImpl implements CityService {
 
-    public final CityRepository cityRepository;
+    private final CityRepository cityRepository;
+
+    private final UserCityService userCityService;
+
+    private final ItemCityService itemCityService;
+
+    private final UserRepository userRepository;
 
     @Autowired
-    public CityServiceImpl(CityRepository cityRepository) {
+    public CityServiceImpl(CityRepository cityRepository, UserCityService userCityService, ItemCityService itemCityService, UserRepository userRepository) {
         this.cityRepository = cityRepository;
+        this.userCityService = userCityService;
+        this.itemCityService = itemCityService;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -30,6 +44,7 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public City getById(Long city_id) {
+        System.out.println("City ID received: " + city_id);
         return cityRepository.findById(city_id).orElseThrow(() -> new InvalidCityIdException(city_id));
     }
 
@@ -50,9 +65,26 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public City deleteCity(Long city_id) {
-        City city = cityRepository.findById(city_id).orElseThrow(() -> new InvalidCityIdException(city_id));
+    public void deleteCity(Long city_id, Long newCityId) {
+        City cityToDelete = cityRepository.findById(city_id).orElseThrow(() -> new InvalidCityIdException(city_id));
+
+        // find potential Item fk constraints
+        List<Item> deleteCityItems = itemCityService.findItemsByCity(cityToDelete);
+
+        // find potential User fk constaints
+        List<User> deleteCityUsers = userRepository.findByCity(cityToDelete);
+
+        // if there are none, the city can be safely deleted
+        if(!deleteCityItems.isEmpty())
+        {
+            City reassignCity = cityRepository.findById(newCityId).orElseThrow(() -> new InvalidCityIdException(newCityId));
+            itemCityService.reassignItemsToCity(cityToDelete, reassignCity);
+        }
+        if (!deleteCityUsers.isEmpty()){
+            City reassignCity = cityRepository.findById(newCityId).orElseThrow(() -> new InvalidCityIdException(newCityId));
+            userCityService.reassignUsersToCity(cityToDelete, reassignCity);
+        }
+
         cityRepository.deleteById(city_id);
-        return city;
     }
 }

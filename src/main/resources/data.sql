@@ -1,7 +1,7 @@
-TRUNCATE TABLE city CASCADE;
 TRUNCATE TABLE users CASCADE;
 TRUNCATE TABLE item CASCADE;
 TRUNCATE TABLE claim CASCADE;
+TRUNCATE TABLE city CASCADE;
 
 INSERT INTO city (zipcode, city_id, name)
 VALUES (1300, 1, 'Kumanovo');
@@ -25,6 +25,22 @@ INSERT INTO item (date_created, city_id, donor_id, item_id, description, name, s
 VALUES ('2024-11-03', 2, 3, 2, 'A red cozy blanket', 'Blanket', 'CLAIMED');
 INSERT INTO item (date_created, city_id, donor_id, item_id, description, name, status)
 VALUES ('2024-11-01', 1, 1, 3, 'Comfortable baby boots', 'Boots', 'CLAIMED');
+
+-- -- Drop the existing foreign key constraint
+-- ALTER TABLE item
+-- DROP CONSTRAINT fk_item_city;
+--
+-- -- Add the foreign key with CASCADE delete
+-- ALTER TABLE item
+--     ADD CONSTRAINT fk_item_city FOREIGN KEY (city_id) REFERENCES city(city_id) ON DELETE CASCADE;
+--
+-- -- Drop the existing foreign key constraint
+-- ALTER TABLE users
+-- DROP CONSTRAINT fk_users_city;
+--
+-- -- Add the foreign key with CASCADE delete
+-- ALTER TABLE users
+--     ADD CONSTRAINT fk_users_city FOREIGN KEY (city_id) REFERENCES city(city_id) ON DELETE CASCADE;
 
 INSERT INTO claim (claim_date, status, claim_id, item_id, recipient)
 VALUES ('2024-11-06', 'CREATED', 1, 2, 2);

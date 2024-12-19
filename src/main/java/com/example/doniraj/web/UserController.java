@@ -31,7 +31,7 @@ public class UserController {
     // The @PreAuthorize annotation checks the given expression before entering the method
     //@PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/all")
-    public ResponseEntity<?> getALl(){
+    public ResponseEntity<?> getAll(){
         List<User> users = userService.getUsers();
         if (users.isEmpty())
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

@@ -7,6 +7,7 @@ import com.example.doniraj.models.exception.InvalidCityIdException;
 import com.example.doniraj.models.exception.InvalidUserIdException;
 import com.example.doniraj.models.exception.InvalidUsernameOrPasswordException;
 import com.example.doniraj.models.exception.UsernameAlreadyExistsException;
+import com.example.doniraj.repository.CityRepository;
 import com.example.doniraj.service.CityService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,7 +29,9 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+
     private final CityService cityService;
+
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -63,6 +66,7 @@ public class UserServiceImpl implements UserService {
         user.setName(userdto.getName());
         user.setEmail(userdto.getEmail());
         City city = cityService.getById(userdto.getCity_id());
+        //City city = cityRepository.findById(userdto.getCity_id()).orElseThrow(() -> new InvalidCityIdException(userdto.getCity_id()));
         user.setCity(city);
         user.setRole(userdto.getRole());
         user.setPhone_number(userdto.getPhone_number());
@@ -89,14 +93,20 @@ public class UserServiceImpl implements UserService {
         //if (!password.equals(repeatPassword))
         //    throw new PasswordsDoNotMatchException();
         User user = userRepository.findByName(userDto.getName());
-        if (!user.getName().isEmpty())
-            throw new UsernameAlreadyExistsException(userDto.getName());
+        //if (!user.getName().isEmpty() && user != null) TODO: fix this later
+        //    throw new UsernameAlreadyExistsException(userDto.getName());
 
         /*if(!userRepository.findByName(userDto.getName()).equals(""))
-            throw new UsernameAlreadyExistsException(userDto.getName());*/
+            throw new UsernameAlreadyExistsException(userDto.getName()); */
 
         String encodedPassword = passwordEncoder.encode(userDto.getPassword());
+
+        if (userDto.getCity_id() == null) {
+            System.out.println(userDto.getCity_id() + "  = null");
+        }
+
         City city = cityService.getById(userDto.getCity_id());
+        //City city = cityRepository.findById(userDto.getCity_id()).orElseThrow(() -> new InvalidCityIdException(userDto.getCity_id()));
         user = new User(userDto.getName(), userDto.getEmail(), encodedPassword, userDto.getPhone_number(), userDto.getRole(), city);
         return userRepository.save(user);
     }

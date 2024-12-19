@@ -15,7 +15,7 @@ public interface CityService {
 
     City updateCity(Long city_id, CityDto cityDto);
 
-    City deleteCity(Long id);
+    void deleteCity(Long id, Long newCityId);
 
 
 }
