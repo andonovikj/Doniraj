@@ -9,6 +9,9 @@ import UserComponent from "./components/user/UserComponent";
 import ItemListComponent from "./components/item/ItemListComponent";
 import ItemComponent from "./components/item/ItemComponent";
 import ItemDetailsComponent from "./components/item/ItemDetailsComponent";
+import ClaimListComponent from "./components/claim/ClaimListComponent";
+import ClaimComponent from "./components/claim/ClaimComponent";
+import ClaimDetailsComponent from "./components/claim/ClaimDetailsComponent";
 
 const ApplicationRouting = () => {
 return (
@@ -81,6 +84,28 @@ return (
             <Route
                 path="/item/:id"
                 element={<ItemDetailsComponent/> }>
+            </Route>
+
+            {/* ---------------------- CLAIM ROUTES ---------------------- */}
+
+            <Route
+                path="/claims"
+                element={ <ClaimListComponent/> }
+            ></Route>
+
+            <Route
+                path="/claim/update/:id"
+                element={<ClaimComponent/> }>
+            </Route>
+
+            <Route
+                path="/claim/add"
+                element={<ClaimComponent/> }>
+            </Route>
+
+            <Route
+                path="/claim/:id"
+                element={<ClaimDetailsComponent/> }>
             </Route>
 
         </Routes>

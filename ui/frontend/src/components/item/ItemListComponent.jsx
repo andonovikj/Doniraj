@@ -88,7 +88,6 @@ function ItemListComponent() {
                 }
                 </tbody>
             </table>
-
         </div>
     );
 }

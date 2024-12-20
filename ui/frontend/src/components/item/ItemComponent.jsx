@@ -182,9 +182,9 @@ function ItemComponent() {
                             <div className="form-group mb-2">
                                 <label className="form-label">City:</label>
                                 <select
-                                    value={city_id || ''} // Bind the value to the current city
-                                    onChange={(e) => setCity_id(Number(e.target.value))} // Update the city state on change
-                                    className={`form-control ${errors.city ? 'is-invalid' : ''}`} // Optional error handling
+                                    value={city_id || ''}
+                                    onChange={(e) => setCity_id(Number(e.target.value))}
+                                    className={`form-control ${errors.city ? 'is-invalid' : ''}`}
                                 >
                                     <option value="">-- Select City --</option>
                                     {cities.map(cityOption => (
