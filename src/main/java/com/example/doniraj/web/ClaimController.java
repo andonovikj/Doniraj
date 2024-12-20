@@ -1,6 +1,8 @@
 package com.example.doniraj.web;
 
 import com.example.doniraj.models.Claim;
+import com.example.doniraj.models.DTO.ClaimDto;
+import com.example.doniraj.models.enums.ClaimStatus;
 import com.example.doniraj.service.ClaimService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -40,10 +42,15 @@ public class ClaimController {
     }
 
     //www.localhost:8080/api/claim/create?recipient_id=2&item_id=1
-    @PostMapping("/create")
-    public ResponseEntity<?> createClaim(@RequestParam Long recipient_id,
-                                         @RequestParam Long item_id){
-        return new ResponseEntity<>(claimService.claimItem(recipient_id, item_id), HttpStatus.CREATED);
+    @PostMapping("/add")
+    public ResponseEntity<?> createClaim(@RequestBody ClaimDto claimdto){
+        return new ResponseEntity<>(claimService.claimItem(claimdto), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateClaim(@PathVariable Long id,
+                                         @RequestBody ClaimDto claimDto) {
+        return new ResponseEntity<>(claimService.updateClaim(id, claimDto), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")

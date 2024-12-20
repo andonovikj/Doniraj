@@ -1,8 +1,10 @@
 package com.example.doniraj.service;
 
 import com.example.doniraj.models.Claim;
+import com.example.doniraj.models.DTO.ClaimDto;
 import com.example.doniraj.models.Item;
 import com.example.doniraj.models.User;
+import com.example.doniraj.models.enums.ClaimStatus;
 
 import java.util.List;
 
@@ -16,7 +18,9 @@ public interface ClaimService {
 
     List<Claim> getClaimsByRecipient(Long recipient_id);
 
-    Claim claimItem(Long recipient_id, Long item_id);
+    Claim claimItem(ClaimDto claimDto);
+
+    Claim updateClaim(Long claim_id, ClaimDto claimDto);
 
     Claim deleteClaim(Long recipient_id);
 }

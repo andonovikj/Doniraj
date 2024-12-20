@@ -1,6 +1,7 @@
 package com.example.doniraj.service.impl;
 
 import com.example.doniraj.models.Claim;
+import com.example.doniraj.models.DTO.ClaimDto;
 import com.example.doniraj.models.Item;
 import com.example.doniraj.models.User;
 import com.example.doniraj.models.enums.ClaimStatus;
@@ -64,21 +65,40 @@ public class ClaimServiceImpl implements ClaimService {
     }
 
     @Override
-    public Claim claimItem(Long recipient_id, Long item_id) {
+    public Claim claimItem(ClaimDto claimDto) {
 
-        User recipient = userService.getById(recipient_id);
+        User recipient = userService.getById(claimDto.getRecipient_id());
 
-        Item item = itemService.getById(item_id);
+        Item item = itemService.getById(claimDto.getItem_id());
 
         if (item.getDonor().equals(recipient)) {
             throw new IllegalArgumentException("Donor cannot claim their own item");
         }
         Claim claim = new Claim(recipient, item, ClaimStatus.CREATED);
-//        claim.setClaimDate(LocalDate.now());
+        claim.setClaimDate(LocalDate.now());
 //        claim.setRecipient(recipient);
 //        claim.setItem(item);
 
         return this.claimRepository.save(claim);
+    }
+
+    @Override
+    public Claim updateClaim(Long claim_id, ClaimDto claimDto) {
+
+        Claim claim = claimRepository.findById(claim_id).orElseThrow(() -> new InvalidClaimIdException(claim_id));
+
+        Item item = itemService.getById(claimDto.getItem_id());
+
+        User recipient = userService.getById(claimDto.getRecipient_id());
+
+        if (claimDto.getStatus() != null){
+            claim.setStatus(claimDto.getStatus());
+        }
+
+        claim.setItem(item);
+        claim.setRecipient(recipient);
+
+        return claimRepository.save(claim);
     }
 
     @Override
