@@ -13,6 +13,7 @@ import ClaimListComponent from "./components/claim/ClaimListComponent";
 import ClaimComponent from "./components/claim/ClaimComponent";
 import ClaimDetailsComponent from "./components/claim/ClaimDetailsComponent";
 import AvailableItems from "./views/AvailableItems";
+import RegisterComponent from "./components/RegisterComponent";
 
 const ApplicationRouting = () => {
 return (
@@ -112,6 +113,11 @@ return (
             <Route
                 path="/claim/:id"
                 element={<ClaimDetailsComponent/> }>
+            </Route>
+
+            <Route
+                path="/register"
+                element={<RegisterComponent/> }>
             </Route>
 
         </Routes>

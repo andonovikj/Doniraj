@@ -73,7 +73,7 @@ const UserComponent = () => {
             if (id)
             {
                 updateUser(id, user).then((response) => {
-                    console.log("hello from saveorUpdateUser() if validateFOrm(), if (id)", response.data);
+                    console.log("hello from saveorUpdateUser() if validateForm(), if (id)", response.data);
                     navigator('/users')
                 }).catch(error => {
                     console.error(error);
