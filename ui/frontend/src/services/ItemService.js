@@ -4,6 +4,10 @@ export const getItems = async () => {
     return await instance.get('/item/all');
 }
 
+export const getAvailableItems = async () => {
+    return await instance.get('/item/all/available');
+}
+
 export const getItem  = async (id) => {
     return await instance.get(`/item/${id}`)
 }

@@ -12,6 +12,7 @@ import ItemDetailsComponent from "./components/item/ItemDetailsComponent";
 import ClaimListComponent from "./components/claim/ClaimListComponent";
 import ClaimComponent from "./components/claim/ClaimComponent";
 import ClaimDetailsComponent from "./components/claim/ClaimDetailsComponent";
+import AvailableItems from "./views/AvailableItems";
 
 const ApplicationRouting = () => {
 return (
@@ -67,8 +68,13 @@ return (
             {/* ---------------------- ITEM ROUTES ---------------------- */}
 
             <Route
-                path="/items"
+                path="/admin/items"
                 element={ <ItemListComponent/> }
+            ></Route>
+
+            <Route
+                path="/items"
+                element={ <AvailableItems/> }
             ></Route>
 
             <Route
