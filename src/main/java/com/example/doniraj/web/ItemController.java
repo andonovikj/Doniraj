@@ -2,6 +2,7 @@ package com.example.doniraj.web;
 
 import com.example.doniraj.models.DTO.ItemDto;
 import com.example.doniraj.models.Item;
+import com.example.doniraj.models.enums.ItemStatus;
 import com.example.doniraj.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,11 @@ public class ItemController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
         return new ResponseEntity<>(items, HttpStatus.OK);
+    }
+
+    @GetMapping("/all/available")
+    public ResponseEntity<?> getAllAvailableItems() {
+        return new ResponseEntity<>(itemService.getItemsByStatus(ItemStatus.AVAILABLE), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

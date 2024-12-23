@@ -2,6 +2,7 @@ package com.example.doniraj.repository;
 
 import com.example.doniraj.models.City;
 import com.example.doniraj.models.Item;
+import com.example.doniraj.models.enums.ItemStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -14,6 +15,8 @@ import java.util.List;
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
     List<Item> findByCity(City city);
+
+    List<Item> findByStatus(ItemStatus itemStatus);
 
     @Modifying
     @Query("UPDATE Item i SET i.city = :newCity WHERE i.city = :oldCity")

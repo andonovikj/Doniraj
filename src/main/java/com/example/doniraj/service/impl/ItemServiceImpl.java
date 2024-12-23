@@ -4,6 +4,7 @@ import com.example.doniraj.models.City;
 import com.example.doniraj.models.DTO.ItemDto;
 import com.example.doniraj.models.Item;
 import com.example.doniraj.models.User;
+import com.example.doniraj.models.enums.ItemStatus;
 import com.example.doniraj.models.exception.InvalidCityIdException;
 import com.example.doniraj.models.exception.InvalidItemIdException;
 import com.example.doniraj.repository.CityRepository;
@@ -38,6 +39,11 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<Item> getItems() {
         return itemRepository.findAll();
+    }
+
+    @Override
+    public List<Item> getItemsByStatus(ItemStatus itemStatus) {
+        return itemRepository.findByStatus(itemStatus.AVAILABLE);
     }
 
     @Override
