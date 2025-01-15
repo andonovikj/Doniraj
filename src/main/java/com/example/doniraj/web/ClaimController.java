@@ -41,7 +41,6 @@ public class ClaimController {
         return new ResponseEntity<>(claimService.getById(id), HttpStatus.OK);
     }
 
-    //www.localhost:8080/api/claim/create?recipient_id=2&item_id=1
     @PostMapping("/add")
     public ResponseEntity<?> createClaim(@RequestBody ClaimDto claimdto){
         return new ResponseEntity<>(claimService.claimItem(claimdto), HttpStatus.CREATED);

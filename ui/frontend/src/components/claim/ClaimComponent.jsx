@@ -158,7 +158,7 @@ function ClaimComponent() {
                                     onChange={(e) => setStatus(e.target.value)}
                                 >
                                     <option value="">Select Status</option>
-                                    <option value="AVAILABLE">Available</option>
+                                    <option value="CREATED">Created</option>
                                     <option value="CANCELLED">Cancelled</option>
                                     <option value="FINISHED">Finished</option>
                                 </select>

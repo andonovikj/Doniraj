@@ -19,3 +19,7 @@ export const updateUser = async (id, user) => {
 export const deleteUser = async (id) => {
     return instance.delete(`/user/delete/${id}`);
 }
+
+export const loginUser = async (userDetails) => {
+    return instance.post('/user/login', userDetails);
+}

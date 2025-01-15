@@ -14,6 +14,8 @@ import ClaimComponent from "./components/claim/ClaimComponent";
 import ClaimDetailsComponent from "./components/claim/ClaimDetailsComponent";
 import AvailableItems from "./views/AvailableItems";
 import RegisterComponent from "./components/RegisterComponent";
+import LoginComponent from "./components/LoginComponent";
+import ItemDetailsView from "./views/ItemDetailsView";
 
 const ApplicationRouting = () => {
 return (
@@ -89,8 +91,13 @@ return (
             </Route>
 
             <Route
-                path="/item/:id"
+                path="/admin/item/:id"
                 element={<ItemDetailsComponent/> }>
+            </Route>
+
+            <Route
+                path="/item/:id"
+                element={<ItemDetailsView/> }>
             </Route>
 
             {/* ---------------------- CLAIM ROUTES ---------------------- */}
@@ -115,9 +122,16 @@ return (
                 element={<ClaimDetailsComponent/> }>
             </Route>
 
+            {/* ---------------------- LOGIN ROUTES ---------------------- */}
+
             <Route
                 path="/register"
                 element={<RegisterComponent/> }>
+            </Route>
+
+            <Route
+                path="/login"
+                element={<LoginComponent/> }>
             </Route>
 
         </Routes>

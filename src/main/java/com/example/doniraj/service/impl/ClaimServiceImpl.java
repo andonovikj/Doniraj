@@ -76,6 +76,7 @@ public class ClaimServiceImpl implements ClaimService {
         }
         Claim claim = new Claim(recipient, item, ClaimStatus.CREATED);
         claim.setClaimDate(LocalDate.now());
+        //TODO: SET ITEM STATUS CLAIMED
 //        claim.setRecipient(recipient);
 //        claim.setItem(item);
 
