@@ -1,5 +1,6 @@
 package com.example.doniraj.service;
 
+import com.example.doniraj.models.DTO.LoginRequestDTO;
 import com.example.doniraj.models.DTO.UserDto;
 import com.example.doniraj.models.User;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,7 +24,7 @@ public interface UserService extends UserDetailsService {
 
     User register(UserDto userDto);
 
-    User login(UserDetails userDetails);
+    User login(LoginRequestDTO loginRequestDTO);
 
     void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication);
 

@@ -20,7 +20,7 @@ import java.util.List;
 @Table(name = "users")
 @Data
 @NoArgsConstructor
-public class User implements UserDetails{ // TODO: CREATE SEPARATE CLASS MYUSERDETAILS
+public class User implements UserDetails{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

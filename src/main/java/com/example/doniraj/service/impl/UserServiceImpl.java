@@ -1,13 +1,12 @@
 package com.example.doniraj.service.impl;
 
 import com.example.doniraj.models.City;
+import com.example.doniraj.models.DTO.LoginRequestDTO;
 import com.example.doniraj.models.DTO.UserDto;
 import com.example.doniraj.models.User;
 import com.example.doniraj.models.exception.InvalidCityIdException;
 import com.example.doniraj.models.exception.InvalidUserIdException;
 import com.example.doniraj.models.exception.InvalidUsernameOrPasswordException;
-import com.example.doniraj.models.exception.UsernameAlreadyExistsException;
-import com.example.doniraj.repository.CityRepository;
 import com.example.doniraj.service.CityService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -113,14 +112,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User login (UserDetails userDetails){
+    public User login (LoginRequestDTO loginRequestDTO){
 
-        if (userDetails.getUsername() == null || userDetails.getPassword() == null ||
-                userDetails.getUsername().isEmpty() || userDetails.getPassword().isEmpty()) {
+        if (loginRequestDTO.getUsername() == null || loginRequestDTO.getPassword() == null ||
+                loginRequestDTO.getUsername().isEmpty() || loginRequestDTO.getPassword().isEmpty()) {
             throw new InvalidUsernameOrPasswordException();
         }
 
-        return userRepository.findByNameAndPassword(userDetails.getUsername(), userDetails.getPassword())
+        return userRepository.findByNameAndPassword(loginRequestDTO.getUsername(), loginRequestDTO.getPassword())
                 .orElseThrow(InvalidUsernameOrPasswordException::new);
     }
 

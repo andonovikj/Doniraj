@@ -20,12 +20,13 @@ function LoginComponent() {
         e.preventDefault();
         loginUser(userDetails)
             .then((response) => {
+                localStorage.setItem('token', response.data.token);
                 console.log("User logged in successfully:", response.data);
 
                 // Store token in localStorage or sessionStorage
                 //localStorage.setItem("token", response.data.token);
 
-                navigate("/items/available"); // Redirect to the available items page after login
+                navigate("/items"); // Redirect to the available items page after login
             })
             .catch((error) => {
                 console.error("Error logging in user:", error.response?.data || error);

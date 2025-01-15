@@ -1,5 +1,6 @@
 package com.example.doniraj.web;
 
+import com.example.doniraj.models.DTO.LoginRequestDTO;
 import com.example.doniraj.models.DTO.UserDto;
 import com.example.doniraj.models.User;
 import com.example.doniraj.service.UserService;
@@ -8,12 +9,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -81,9 +79,9 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody UserDetails userDetails)
+    public ResponseEntity<?> loginUser(@RequestBody LoginRequestDTO loginRequestDTO)
     {
-        return new ResponseEntity<>(userService.login(userDetails), HttpStatus.OK);
+        return new ResponseEntity<>(userService.login(loginRequestDTO), HttpStatus.OK);
     }
 
     @PostMapping("/logout")
