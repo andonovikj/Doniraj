@@ -1,5 +1,6 @@
 package com.example.doniraj.config;
 
+import com.example.doniraj.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -8,7 +9,9 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.userdetails.MapReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.header.writers.XXssProtectionHeaderWriter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -20,10 +23,29 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class SecurityConfig {
     private final CustomUsernamePasswordAuthenticationProvider authenticationProvider;
 
-    public SecurityConfig(CustomUsernamePasswordAuthenticationProvider authenticationProvider) {
-        this.authenticationProvider = authenticationProvider;
-    }
+    private final UserService userService;
 
+
+    public SecurityConfig(CustomUsernamePasswordAuthenticationProvider authenticationProvider, UserService userService) {
+        this.authenticationProvider = authenticationProvider;
+        this.userService = userService;
+    }
+    
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return username -> {
+            var user = userService.loadUserByUsername(username);
+            if (user == null) {
+                throw new UsernameNotFoundException("User not found");
+            }
+            return org.springframework.security.core.userdetails.User
+                    .withUsername(user.getUsername())
+                    .password(user.getPassword())
+                    .roles(String.valueOf(user.getAuthorities()))
+                    .build();
+        };
+    }
+    
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception  {
 

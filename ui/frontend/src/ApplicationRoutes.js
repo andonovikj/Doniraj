@@ -16,6 +16,7 @@ import AvailableItems from "./views/AvailableItems";
 import RegisterComponent from "./components/RegisterComponent";
 import LoginComponent from "./components/LoginComponent";
 import ItemDetailsView from "./views/ItemDetailsView";
+import UserDetailsView from "./views/UserDetailsView";
 
 const ApplicationRouting = () => {
 return (
@@ -54,7 +55,7 @@ return (
             </Route>
 
             <Route
-                path="/user/:id"
+                path="/admin/user/:id"
                 element={<UserDetailsComponent/> }>
             </Route>
 
@@ -66,6 +67,11 @@ return (
             <Route
                 path="/user/update/:id"
                 element={<UserComponent/> }>
+            </Route>
+
+            <Route
+                path="/user/:id"
+                element={<UserDetailsView/> }>
             </Route>
 
             {/* ---------------------- ITEM ROUTES ---------------------- */}
@@ -122,7 +128,7 @@ return (
                 element={<ClaimDetailsComponent/> }>
             </Route>
 
-            {/* ---------------------- LOGIN ROUTES ---------------------- */}
+            {/* ---------------------- AUTH ROUTES ---------------------- */}
 
             <Route
                 path="/register"

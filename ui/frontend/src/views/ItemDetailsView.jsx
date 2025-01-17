@@ -51,28 +51,23 @@ function ItemDetailsView() {
             <table className="table table-striped">
                 <thead>
                 <tr>
-                    <td> Item Id</td>
                     <td> Item Name</td>
                     <td> Item Description</td>
                     <td> Item City</td>
                     <td> Item Donor</td>
-                    <td> Actions </td>
                 </tr>
                 </thead>
                 <tbody>
                 {item ? (
                     <tr>
-                        <td> {item.item_id}</td>
                         <td> {item.name}</td>
                         <td> {item.description}</td>
                         <td> {item.city.name}</td>
                         <td> {item.donor.name}</td>
                         <td>
                             <ButtonGroup>
-                                <Button size="sm" color="secondary" className="m-1" onClick={() => navigator(`/item/update/${item.item_id}`)}>Edit</Button>
                                 <Button size="sm" color="primary" className="m-1" onClick={() => handleClaim()}>Claim</Button>
                             </ButtonGroup>
-
                         </td>
                     </tr>
                 ) : (

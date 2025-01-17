@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigate, useParams} from "react-router-dom";
 import {getCities} from "../../services/CityService";
-import {createUser, getUser, updateUser} from "../../services/UserService";
+import {getUser, updateUser} from "../../services/UserService";
+import {createUser} from "../../services/AuthService";
 
 const UserComponent = () => {
 

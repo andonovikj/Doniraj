@@ -7,19 +7,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
-import java.util.List;
+public interface AuthService {
+    User register(UserDto userDto);
 
-public interface UserService extends UserDetailsService {
-    List<User> getUsers();
+    String login(LoginRequestDTO loginRequestDTO);
 
-    User getById(Long id);
+    void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication);
 
-    //public User create(UserDto userdto);
-
-    public User update(Long user_id, UserDto userdto);
-
-    public User delete(Long user_id);
-
+    UserDetails loadUserByUsername(String name);
 }

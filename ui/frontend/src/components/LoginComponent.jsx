@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import {loginUser} from "../services/UserService";
+import {Link, useNavigate} from "react-router-dom";
+import {loginUser} from "../services/AuthService";
 
 function LoginComponent() {
     const [userDetails, setUserDetails] = useState({
@@ -16,22 +16,30 @@ function LoginComponent() {
         setUserDetails({ ...userDetails, [name]: value });
     };
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
-        loginUser(userDetails)
-            .then((response) => {
-                localStorage.setItem('token', response.data.token);
-                console.log("User logged in successfully:", response.data);
-
-                // Store token in localStorage or sessionStorage
-                //localStorage.setItem("token", response.data.token);
-
-                navigate("/items"); // Redirect to the available items page after login
-            })
-            .catch((error) => {
-                console.error("Error logging in user:", error.response?.data || error);
-                setError(error.response?.data?.message || "Login failed.");
-            });
+        // loginUser(userDetails)
+        //     .then((response) => {
+        //         localStorage.setItem('token', response.data.token);
+        //         console.log("User logged in successfully:", response.data);
+        //         navigate("/items"); // Redirect to the available items page after login
+        //     })
+        //     .catch((error) => {
+        //         console.error("Error logging in user:", error.response?.data || error);
+        //         setError(error.response?.data?.message || "Login failed.");
+        //     });
+        try {
+            const response = await loginUser(userDetails);
+            if (response.data !== 'Invalid credentials') {
+                localStorage.setItem('token', response.data);
+                navigate('/items');
+            } else {
+                setError(error.response?.data?.message || "Invalid credentials.");
+                console.log('Invalid credentials');
+            }
+        } catch (error) {
+            setError(error.response?.data?.message || "Invalid credentials.");
+        }
     };
 
     return (
@@ -65,6 +73,9 @@ function LoginComponent() {
                     Login
                 </button>
             </form>
+            <div className="mt-3">
+                <span>Not registered? <Link to="/register">Register here</Link></span>
+            </div>
         </div>
     );
 }

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
-import {createUser} from "../services/UserService";
+import {createUser} from "../services/AuthService";
 import {getCities} from "../services/CityService";
 
 function RegisterComponent() {

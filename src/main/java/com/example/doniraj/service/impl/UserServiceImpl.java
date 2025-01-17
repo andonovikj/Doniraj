@@ -85,53 +85,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User register(UserDto userDto) {
-        if (userDto.getName()==null || userDto.getName().isEmpty()  || userDto.getPassword()==null || userDto.getPassword().isEmpty())
-            throw new InvalidUsernameOrPasswordException();
-        // TODO ADD ATTRIBUTE REPEATPASSWORD IN USER ENTITY
-        //if (!password.equals(repeatPassword))
-        //    throw new PasswordsDoNotMatchException();
-        User user = userRepository.findByName(userDto.getName());
-        //if (!user.getName().isEmpty() && user != null) TODO: fix this later
-        //    throw new UsernameAlreadyExistsException(userDto.getName());
-
-        /*if(!userRepository.findByName(userDto.getName()).equals(""))
-            throw new UsernameAlreadyExistsException(userDto.getName()); */
-
-
-        String encodedPassword = passwordEncoder.encode(userDto.getPassword());
-
-        if (userDto.getCity_id() == null) {
-            System.out.println(userDto.getCity_id() + "  = null");
-        }
-
-        City city = cityService.getById(userDto.getCity_id());
-        //City city = cityRepository.findById(userDto.getCity_id()).orElseThrow(() -> new InvalidCityIdException(userDto.getCity_id()));
-        user = new User(userDto.getName(), userDto.getEmail(), encodedPassword, userDto.getPhone_number(), userDto.getRole(), city);
-        return userRepository.save(user);
-    }
-
-    @Override
-    public User login (LoginRequestDTO loginRequestDTO){
-
-        if (loginRequestDTO.getUsername() == null || loginRequestDTO.getPassword() == null ||
-                loginRequestDTO.getUsername().isEmpty() || loginRequestDTO.getPassword().isEmpty()) {
-            throw new InvalidUsernameOrPasswordException();
-        }
-
-        return userRepository.findByNameAndPassword(loginRequestDTO.getUsername(), loginRequestDTO.getPassword())
-                .orElseThrow(InvalidUsernameOrPasswordException::new);
-    }
-
-    @Override
-    public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication){
-        // Clear the SecurityContext for the current user.
-        // Destroy the user’s session, ensuring their data isn't cached on the server.
-        SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
-        logoutHandler.logout(request, response, authentication);
-    }
-
-    @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
         return userRepository.findByName(name);//.orElseThrow(()->new UsernameNotFoundException(name));
         /* This works if User doesn't implement UserDetails

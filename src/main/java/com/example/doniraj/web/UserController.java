@@ -72,29 +72,5 @@ public class UserController {
         "role": "ROLE_DONOR"
     }
      */
-    @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody UserDto userDto)
-    {
-        return new ResponseEntity<>(userService.register(userDto), HttpStatus.CREATED);
-    }
 
-    @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody LoginRequestDTO loginRequestDTO)
-    {
-        return new ResponseEntity<>(userService.login(loginRequestDTO), HttpStatus.OK);
-    }
-
-    @PostMapping("/logout")
-    public ResponseEntity<?> logoutUser(HttpServletRequest request, HttpServletResponse response)
-    {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        // Spring Security treats even anonymous users as "authenticated" if the anonymous feature is enabled.
-        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
-            return new ResponseEntity<>("User not logged in", HttpStatus.BAD_REQUEST);
-        }
-
-        userService.logout(request, response, authentication);
-        return new ResponseEntity<>("Logout successful", HttpStatus.OK);
-    }
 }
