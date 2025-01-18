@@ -1,60 +1,65 @@
 import React from 'react';
-import { Box, Container, Grid, Typography, Link, ButtonGroup, IconButton } from '@mui/material';
+import { Grid, Typography, ButtonGroup, IconButton, Container, Link } from '@mui/material';
+import EmailIcon from '@mui/icons-material/Email';
 import FacebookIcon from '@mui/icons-material/Facebook';
-import TwitterIcon from '@mui/icons-material/Twitter';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
 const FooterComponent = () => {
     return (
-        <Box component="footer" sx={{ backgroundColor: 'primary.main', color: 'white', padding: '2rem 0' }}>
-            <Container>
+        <footer style={{ backgroundColor: '#1976d2', color: '#fff', padding: '20px 0' }}>
+            <Container maxWidth="lg">
                 <Grid container spacing={4}>
-                    <Grid item xs={12} md={6}>
+                    {/* Column 1: App Description */}
+                    <Grid item xs={12} sm={4}>
                         <Typography variant="h6" gutterBottom>
-
+                            Doniraj
                         </Typography>
-                        <Grid container spacing={1}>
-                            <Grid item xs={6}>
-                                <Link href="/items" underline="hover" color="inherit">Items</Link>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Link href="/about" underline="hover" color="inherit">Who We Are</Link>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Link href="/profile" underline="hover" color="inherit">Profile</Link>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Link href="/contact" underline="hover" color="inherit">Contact Us</Link>
-                            </Grid>
-                        </Grid>
+                        <Typography variant="body2">
+                            Doniraj is a web platform where users can donate items or clothing, and others in need can claim them. Our mission is to make sharing and helping easy, accessible, and impactful for everyone.
+                        </Typography>
                     </Grid>
-                    <Grid item xs={12} md={6}>
+
+                    {/* Column 2: Navigation Links */}
+                    <Grid item xs={12} sm={3}>
+                        <Typography variant="h6" gutterBottom>
+                            Quick Links
+                        </Typography>
+                        <ul style={{ listStyle: 'none', padding: 0 }}>
+                            <li><Link href="/" color="inherit">Home</Link></li>
+                            <li><Link href="/about" color="inherit">About Us</Link></li>
+                            <li><Link href="/contact" color="inherit">Contact Us</Link></li>
+                            <li><Link href="/faq" color="inherit">FAQ</Link></li>
+                        </ul>
+                    </Grid>
+
+                    {/* Column 3: Social Media Icons */}
+                    <Grid item xs={12} sm={5}>
                         <Typography variant="h6" gutterBottom>
                             Follow Us
                         </Typography>
-                        <ButtonGroup>
-                            <IconButton color="inherit" href="https://facebook.com" aria-label="Facebook">
+                        <div>
+                            <IconButton href="mailto:contact@doniraj.com" color="inherit">
+                                <EmailIcon />
+                            </IconButton>
+                            <IconButton href="https://facebook.com" target="_blank" color="inherit">
                                 <FacebookIcon />
                             </IconButton>
-                            <IconButton color="inherit" href="https://twitter.com" aria-label="Twitter">
-                                <TwitterIcon />
-                            </IconButton>
-                            <IconButton color="inherit" href="https://instagram.com" aria-label="Instagram">
+                            <IconButton href="https://instagram.com" target="_blank" color="inherit">
                                 <InstagramIcon />
                             </IconButton>
-                            <IconButton color="inherit" href="https://linkedin.com" aria-label="LinkedIn">
+                            <IconButton href="https://linkedin.com" target="_blank" color="inherit">
                                 <LinkedInIcon />
                             </IconButton>
-                        </ButtonGroup>
+                        </div>
                     </Grid>
                 </Grid>
-                <Typography variant="body2" align="center" sx={{ marginTop: '1rem' }}>
+                <Typography variant="body2" align="center" style={{ marginTop: '20px' }}>
                     © 2024 Doniraj. All rights reserved.
                 </Typography>
             </Container>
-        </Box>
+        </footer>
     );
-}
+};
 
 export default FooterComponent;

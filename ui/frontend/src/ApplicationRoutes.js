@@ -70,7 +70,7 @@ return (
             </Route>
 
             <Route
-                path="/user/:id"
+                path="/profile"
                 element={<UserDetailsView/> }>
             </Route>
 
