@@ -1,7 +1,26 @@
 import React, {Component, useEffect, useState} from 'react';
-import {Button, ButtonGroup, Container} from "reactstrap";
 import {deleteCity, getCities, getCity} from "../../services/CityService";
 import { useNavigate } from "react-router-dom";
+import {
+    Button,
+    Container,
+    Grid,
+    IconButton,
+    MenuItem,
+    Select,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Typography,
+    Paper
+} from '@mui/material';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 const CityListComponent = () => {
 
@@ -49,57 +68,80 @@ const CityListComponent = () => {
 
     // TODO: consistency with async await
         return (
-            <div>
-                <h1 className = "text-center">Cities List</h1>
-            <br/>
-
-                <Container fluid>
-                    <div className="float-right">
-                        <Button color="success" onClick={addNewCity}>Add City</Button>
-                    </div>
-                </Container>
-                <table className = "table table-striped">
-                    <thead>
-                    <tr>
-
-                        <td> City Id</td>
-                        <td> City Name</td>
-                        <td> City Zipcode</td>
-                        <td> Actions </td>
-                    </tr>
-
-                    </thead>
-                    <tbody>
-                    {
-                            cities.map(
-                                city =>
-                                    <tr key = {city.id}>
-                                        <td> {city.city_id}</td>
-                                        <td> {city.name}</td>
-                                        <td> {city.zipcode}</td>
-                                        <td>
-                                            <ButtonGroup>
-                                                <Button size="sm" color="primary" className="m-1" onClick={() => viewCity(city.city_id)}>View</Button>
-                                                <Button size="sm" color="secondary" className="m-1" onClick={() => editCity(city.city_id)} >Edit</Button>
-                                                <div>
-                                                    <label>Select new city for items:</label>
-                                                    <select onChange={(e) => setNewCityId(e.target.value)}>
-                                                        <option value="">-- Select City --</option>
-                                                        {cities.map(city => (
-                                                            <option key={city.city_id} value={city.city_id}>{city.name}</option>
-                                                        ))}
-                                                    </select>
-                                                    <Button size="sm" color="danger" className="m-1" onClick={() => removeCity(city.city_id, newCityId)}>Delete</Button>
-                                                </div>
-                                            </ButtonGroup>
-                                        </td>
-                                    </tr>
-                            )
-                    }
-                    </tbody>
-                </table>
-
-            </div>
+            <Container>
+                <Typography variant="h4" sx={{ mt: 2 }}align="center" gutterBottom>
+                    Cities List
+                </Typography>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    startIcon={<AddCircleIcon />}
+                    onClick={addNewCity}
+                    sx={{ mb: 2 }}
+                >
+                    Add City
+                </Button>
+                <TableContainer component={Paper}>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell sx={{ fontWeight: 'bold' }}>City Id</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold' }}>City Name</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold' }}>City Zipcode</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold' }}>Actions</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {cities.map((city) => (
+                                <TableRow key={city.city_id}>
+                                    <TableCell>{city.city_id}</TableCell>
+                                    <TableCell>{city.name}</TableCell>
+                                    <TableCell>{city.zipcode}</TableCell>
+                                    <TableCell>
+                                        <Grid container spacing={1} alignItems="center">
+                                            <Grid item>
+                                                <IconButton color="info" onClick={() => viewCity(city.city_id)}>
+                                                    <VisibilityIcon />
+                                                </IconButton>
+                                            </Grid>
+                                            <Grid item>
+                                                <IconButton color="secondary" onClick={() => editCity(city.city_id)}>
+                                                    <EditIcon />
+                                                </IconButton>
+                                            </Grid>
+                                            <Grid item>
+                                                <Select
+                                                    value={newCityId}
+                                                    onChange={(e) => setNewCityId(e.target.value)}
+                                                    displayEmpty
+                                                    size="small"
+                                                >
+                                                    <MenuItem value="">
+                                                        <em>-- Select Replacement City --</em>
+                                                    </MenuItem>
+                                                    {cities.map((option) => (
+                                                        <MenuItem key={option.city_id} value={option.city_id}>
+                                                            {option.name}
+                                                        </MenuItem>
+                                                    ))}
+                                                </Select>
+                                            </Grid>
+                                            <Grid item>
+                                                <IconButton
+                                                    color="error"
+                                                    onClick={() => removeCity(city.city_id, newCityId)}
+                                                >
+                                                    <DeleteIcon />
+                                                </IconButton>
+                                            </Grid>
+                                        </Grid>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </Container>
 
         )
 

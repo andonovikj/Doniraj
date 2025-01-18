@@ -20,7 +20,7 @@ import UserDetailsView from "./views/UserDetailsView";
 
 const ApplicationRouting = () => {
 return (
-    <BrowserRouter>
+
         <Routes>
             <Route
                 path="/"
@@ -142,7 +142,7 @@ return (
 
         </Routes>
 
-    </BrowserRouter>
+
 )
 }
 export default ApplicationRouting;
