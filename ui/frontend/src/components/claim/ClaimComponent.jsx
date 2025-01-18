@@ -137,7 +137,7 @@ function ClaimComponent() {
                     <div className="card-body">
                         <form>
                             <div className="form-group mb-2">
-                                <label className="form-label">Claim Name:</label>
+                                <label className="form-label">Claim Date:</label>
                                 <input
                                     type="date"
                                     placeholder="Enter Claim date"

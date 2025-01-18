@@ -5,8 +5,9 @@ import com.example.doniraj.models.DTO.ClaimDto;
 import com.example.doniraj.models.Item;
 import com.example.doniraj.models.User;
 import com.example.doniraj.models.enums.ClaimStatus;
+import com.example.doniraj.models.enums.ItemStatus;
 import com.example.doniraj.models.exception.*;
-import com.example.doniraj.repository.UserRepository;
+import com.example.doniraj.service.EmailService;
 import com.example.doniraj.service.ItemService;
 import com.example.doniraj.service.UserService;
 import jakarta.transaction.Transactional;
@@ -23,19 +24,19 @@ import java.util.List;
 @Transactional
 public class ClaimServiceImpl implements ClaimService {
 
-    public final ClaimRepository claimRepository;
+    private final ClaimRepository claimRepository;
 
-    public final UserService userService;
+    private final UserService userService;
 
-    public final UserRepository userRepository;
+    private final EmailService emailService;
 
-    public final ItemService itemService;
+    private final ItemService itemService;
 
     @Autowired
-    public ClaimServiceImpl(ClaimRepository claimRepository, UserService userService, UserRepository userRepository, ItemService itemService) {
+    public ClaimServiceImpl(ClaimRepository claimRepository, UserService userService, EmailService emailService, ItemService itemService) {
         this.claimRepository = claimRepository;
         this.userService = userService;
-        this.userRepository = userRepository;
+        this.emailService = emailService;
         this.itemService = itemService;
     }
 
@@ -76,7 +77,24 @@ public class ClaimServiceImpl implements ClaimService {
         }
         Claim claim = new Claim(recipient, item, ClaimStatus.CREATED);
         claim.setClaimDate(LocalDate.now());
-        //TODO: SET ITEM STATUS CLAIMED
+
+        // Send an email to the recipient with the Donor's info
+
+        /*
+        User donor = item.getDonor();
+
+        String recipientEmail = recipient.getEmail();
+
+        emailService.SendMail(recipientEmail,
+                "Claim Confirmation - Donor Information",
+                String.format("\"Hello %s,\\n\\nYou have claimed an item. " +
+                        "Here are the donor's details:" +
+                        "\\nName: %s\\nEmail: %s\\nPhone: %s\\n\\n" +
+                        "Please contact them to arrange for item pickup.\\n\\n" +
+                        "Thank you for using Doniraj!\",\n",
+                        recipient.getName(), donor.getName(), donor.getEmail(), donor.getPhone_number()));
+        */
+        item.setStatus(ItemStatus.CLAIMED);
 //        claim.setRecipient(recipient);
 //        claim.setItem(item);
 
