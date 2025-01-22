@@ -1,21 +1,29 @@
 package com.example.doniraj.config;
 
 import com.example.doniraj.service.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.MapReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.header.writers.XXssProtectionHeaderWriter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -50,13 +58,14 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception  {
 
         http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable) // Disable CSRF for simplicity (enable it in production with proper configuration)
                 .authorizeHttpRequests(auth -> auth
                         //.requestMatchers("/api/user/**").hasRole("ADMIN") // Only ADMIN can access /user/** endpoints
                         // TODO: REMOVE THIS BYPASS LINE AFTER IMPLEMENTING AND TESTING UI
                         .requestMatchers("/**").permitAll()
-                        //.requestMatchers("/", "/login", "/register", "/items/**").permitAll() // Public access endpoints
-                        //.anyRequest().authenticated() // All other requests require authentication
+                        .requestMatchers("/", "/login", "/register", "/items/**").permitAll() // Public access endpoints
+                        .anyRequest().authenticated() // All other requests require authentication
                 )
                 .formLogin((form) -> form
                         .permitAll()
@@ -64,12 +73,20 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/", true)
                 )
                 .logout((logout) -> logout
-                        .logoutUrl("/api/user/logout")
+                        .logoutUrl("/api/auth/logout")
                         .clearAuthentication(true)
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
-                        .logoutSuccessUrl("/")
+                        .logoutSuccessHandler((request, response, authentication) -> {
+                            response.setStatus(HttpServletResponse.SC_OK); // Set status 200 for a successful logout
+                            response.getWriter().write("{\"message\":\"Hello from backend, Logged out successfully\"}"); // Send success message
+                        })
+                        .logoutSuccessUrl("/items")
+                )
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Only create a session when required
                 );
+
         //TODO LOOK INTO STORED XSS ATTACK
         http.headers(headers ->
                 headers.xssProtection( // xxsProtection configures the X-XSS-Protection HTTP response header to prevent reflected XSS attacks
@@ -84,22 +101,33 @@ public class SecurityConfig {
         return http.build();
     }
 
+//    @Bean
+//    public WebMvcConfigurer corsConfigurer() {
+//        return new WebMvcConfigurer() {
+//            @Override
+//            public void addCorsMappings(CorsRegistry registry) {
+//                registry.addMapping("/**")
+//                        .allowedOrigins("http://localhost:3000")
+//                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+//                        .allowedHeaders("*")
+//                        .allowCredentials(true);
+//            }
+//        };
+//    }
+
     @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:3000")
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowedHeaders("*")
-                        .allowCredentials(true);
-            }
-        };
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     // AuthenticationManager Bean, a core component in Spring Security that handles authentication requests
-
     @Bean
     public AuthenticationManager authManager(HttpSecurity http) throws Exception {
         // retrieves a shared AuthenticationManagerBuilder instance that Spring manages

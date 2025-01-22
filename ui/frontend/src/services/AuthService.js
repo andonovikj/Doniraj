@@ -8,6 +8,6 @@ export const loginUser = async (userDetails) => {
     return instance.post('/auth/login', userDetails);
 }
 
-export const logoutUser = async (obj) => {
-    return instance.post('/auth/logout', obj)
+export const logoutUser = async () => {
+    return instance.post('/auth/logout', {})
 }
