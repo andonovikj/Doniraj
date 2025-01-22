@@ -1,83 +1,94 @@
-import React, {useEffect, useState} from 'react';
-import {useNavigate, useParams} from "react-router-dom";
-import {getItem} from "../services/ItemService";
-import {Button, ButtonGroup} from "reactstrap";
-import * as ClaimService from "../services/ClaimService";
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getItem } from '../services/ItemService';
+import { createClaim } from '../services/ClaimService';
+import { Box, Typography, Button, CircularProgress, Grid } from '@mui/material';
+import EmailIcon from '@mui/icons-material/Email';
 
 function ItemDetailsView() {
-
-    const [item, setItem] = useState();
+    const [item, setItem] = useState(null);
     const user_id = localStorage.getItem("user_id");
-
-    const {id} = useParams();
-
-
+    const { id } = useParams();
     const navigator = useNavigate();
 
     useEffect(() => {
-        getItem(id).then((response) => {
-            setItem(response.data);
-        }). catch(error => {
-            console.log(error);
-        })
-    })
+        getItem(id)
+            .then((response) => {
+                setItem(response.data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }, [id]);
 
     const handleClaim = async () => {
         const claimDto = {
-            //recipient_id: user_id,
             claimDate: '',
             status: 'CREATED',
             item_id: Number(id),
-            recipient_id: Number(4)
+            recipient_id: Number(user_id)
         };
 
-        ClaimService.createClaim(claimDto).then((response) => {
-               console.log(response.data);
-               alert("Item claimed successfully!");
-               navigator('/items')
-            //fetchAvailableItems(); // Refresh items after claiming
-        }).catch (error => {
-            console.error("ClaimDTO: " , claimDto);
-            console.error("Error claiming item:", error);
-            alert(error.response?.data?.message || "Failed to claim item.");
-        })
+        createClaim(claimDto)
+            .then(() => {
+                alert("Item claimed successfully!");
+                navigator('/items');
+            })
+            .catch((error) => {
+                console.error("Error claiming item:", error);
+                alert(error.response?.data?.message || "Failed to claim item.");
+            });
     };
 
     return (
-        <div>
-            <h1 className="text-center">Item Details</h1>
-            <br />
-
-            <table className="table table-striped">
-                <thead>
-                <tr>
-                    <td> Item Name</td>
-                    <td> Item Description</td>
-                    <td> Item City</td>
-                    <td> Item Donor</td>
-                </tr>
-                </thead>
-                <tbody>
-                {item ? (
-                    <tr>
-                        <td> {item.name}</td>
-                        <td> {item.description}</td>
-                        <td> {item.city.name}</td>
-                        <td> {item.donor.name}</td>
-                        <td>
-                            <ButtonGroup>
-                                <Button size="sm" color="primary" className="m-1" onClick={() => handleClaim()}>Claim</Button>
-                            </ButtonGroup>
-                        </td>
-                    </tr>
-                ) : (
-                    <tr>
-                        <td colSpan="4" className="text-center">Loading...</td>
-                    </tr>
-                )}
-                </tbody>
-            </table>
-        </div>
+        <Box sx={{ p: 4 }}>
+            {item ? (
+                <Grid container spacing={4} alignItems="center">
+                    <Grid item xs={12} md={6}>
+                        <Box
+                            component="img"
+                            src="/placeholder-image.jpg" // Replace with the real image source
+                            alt={item.name}
+                            sx={{
+                                width: '100%',
+                                height: 'auto',
+                                borderRadius: 2,
+                                backgroundColor: '#f4f4f4',
+                                objectFit: 'cover',
+                            }}
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <Typography variant="h3" gutterBottom>
+                            {item.name}
+                        </Typography>
+                        <Typography variant="body1" sx={{ mb: 3 }}>
+                            {item.description}
+                        </Typography>
+                        <Typography variant="body1">
+                            <strong>City:</strong> {item.city.name}
+                        </Typography>
+                        <Typography variant="body1" sx={{ mb: 2 }}>
+                            <strong>Donor:</strong> {item.donor.name}
+                        </Typography>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            size="large"
+                            startIcon={<EmailIcon />}
+                            onClick={handleClaim}
+                            sx={{ padding: '10px 20px' }}
+                        >
+                            Claim This Item
+                        </Button>
+                    </Grid>
+                </Grid>
+            ) : (
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                    <CircularProgress />
+                </Box>
+            )}
+        </Box>
     );
 }
 

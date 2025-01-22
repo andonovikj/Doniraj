@@ -76,14 +76,21 @@ public class AuthServiceImpl implements AuthService {
     public String login (LoginRequestDTO loginRequestDTO){
         try {
             var authenticationToken = new UsernamePasswordAuthenticationToken(loginRequestDTO.getUsername(), loginRequestDTO.getPassword());
+
             var authentication = authenticationManager.authenticate(authenticationToken);
-            var jwt = jwtTokenUtil.generateToken(authentication.getName());
+
+            User user = userRepository.findByName(authentication.getName());
+
+            var jwt = jwtTokenUtil.generateToken(user.getUsername(), user.getUser_id(), user.getRole());
+
             return jwt;
         } catch (AuthenticationException e) {
             return "Invalid credentials";
         }
-        //return userRepository.findByNameAndPassword(loginRequestDTO.getUsername(), loginRequestDTO.getPassword())
-          //      .orElseThrow(InvalidUsernameOrPasswordException::new);
+        /* without JWT:
+         return userRepository.findByNameAndPassword(loginRequestDTO.getUsername(), loginRequestDTO.getPassword())
+               .orElseThrow(InvalidUsernameOrPasswordException::new);
+         */
     }
 
     @Override

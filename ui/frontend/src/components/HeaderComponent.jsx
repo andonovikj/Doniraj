@@ -16,14 +16,14 @@ const HeaderComponent = () => {
     };
 
     return (
-        <AppBar position="static" color="primary">
+        <AppBar position="static" color="primary" style={{ marginBottom: 40 }}>
             <Toolbar>
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                     <RouterLink to="/items" style={{ color: 'inherit', textDecoration: 'none' }}>
                         Doniraj
                     </RouterLink>
                 </Typography>
-                <Button color="inherit" component={RouterLink} to="/">Home</Button>
+                <Button color="inherit" component={RouterLink} to="/items">Home</Button>
                 <Button color="inherit" component={RouterLink} to="/about">About Us</Button>
                 <Button color="inherit" component={RouterLink} to="/contact">Contact Us</Button>
                 <Button color="inherit" component={RouterLink} to="/faq">FAQ</Button>

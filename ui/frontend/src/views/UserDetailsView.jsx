@@ -1,72 +1,79 @@
-import React, {useEffect, useState} from 'react';
-import {useNavigate, useParams} from "react-router-dom";
-import {getUser} from "../services/UserService";
-import {Button, ButtonGroup} from "reactstrap";
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getUser } from '../services/UserService';
+//import jwtDecode from "jwt-decode"; // Removed braces for proper import
 import { jwtDecode } from "jwt-decode";
+import { Box, Typography, Button, Avatar, Grid } from '@mui/material';
 
-function UserDetailsView () {
-    const [user, setUser] = useState();
-
-    const { id } = useParams();
-
+function UserDetailsView() {
+    const [user, setUser] = useState(null);
     const navigator = useNavigate();
 
-    const token = localStorage.getItem("token"); // or however you store the token
-    let currentUserRole = null;
+    const token = localStorage.getItem("token");
+    let userId = null;
+
     if (token) {
         const decodedToken = jwtDecode(token);
-        console.log("role:" , decodedToken.role);
-        currentUserRole = decodedToken.role;  // Assuming your JWT includes a 'role' claim
+        userId = decodedToken.user_id; // Ensure your JWT contains `user_id`
     }
 
-
     useEffect(() => {
-        getUser(id).then((response) => {
-            setUser(response.data);
-        }).catch(error => {
-            console.log(error);
-        })
-    }, [id])
+        if (userId) {
+            getUser(userId)
+                .then((response) => setUser(response.data))
+                .catch((error) => console.error(error));
+        }
+    }, [userId]);
+
     return (
-        <div>
-            <h1 className="text-center">User Details</h1>
-            <br />
-
-            <table className="table table-striped">
-                <thead>
-                <tr>
-                    <td> User Name</td>
-                    <td> User Email</td>
-                    <td> User Phone Number</td>
-                    {/*{currentUserRole === 'ROLE_ADMIN' && <td> User Role</td>} */}
-                    <td> User City</td>
-                    <td> Actions </td>
-                </tr>
-                </thead>
-                <tbody>
-                {user ? (
-                    <tr>
-                        <td> {user.name}</td>
-                        <td> {user.email}</td>
-                        <td> {user.phone_number}</td>
-                        {/*currentUserRole === 'ROLE_ADMIN' && <td> {user.role}</td>*/}
-                        <td> {user.city.name}</td>
-                        <td>
-                            <ButtonGroup>
-                                <Button size="sm" color="secondary" className="m-1" onClick={() => navigator(`/user/update/${user.user_id}`)}>Edit</Button>
-                            </ButtonGroup>
-
-                        </td>
-                    </tr>
-                ) : (
-                    <tr>
-                        <td colSpan="4" className="text-center">Loading...</td>
-                    </tr>
-                )}
-                </tbody>
-            </table>
-        </div>
+        <Box sx={{ p: 4, maxWidth: '800px', margin: '0 auto' }}>
+            {user ? (
+                <>
+                    <Box display="flex" alignItems="center" mb={4}>
+                        <Avatar
+                            sx={{ width: 100, height: 100, marginRight: 2 }}
+                            alt={user.name}
+                            src="/placeholder-avatar.png"
+                        />
+                        <Box>
+                            <Typography variant="h4" component="div" gutterBottom>
+                                {user.name}
+                            </Typography>
+                            <Typography variant="body1" color="textSecondary">
+                                {user.city.name}
+                            </Typography>
+                        </Box>
+                    </Box>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12} md={6}>
+                            <Typography variant="body1">
+                                <strong>Email:</strong> {user.email}
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                            <Typography variant="body1">
+                                <strong>Phone Number:</strong> {user.phone_number}
+                            </Typography>
+                        </Grid>
+                    </Grid>
+                    <Box mt={4}>
+                        <Button
+                            variant="contained"
+                            color="secondary"
+                            size="large"
+                            onClick={() => navigator(`/user/update/${user.user_id}`)}
+                        >
+                            Edit Profile
+                        </Button>
+                    </Box>
+                </>
+            ) : (
+                <Box display="flex" justifyContent="center" alignItems="center" height="50vh">
+                    <Typography variant="h6">Loading...</Typography>
+                </Box>
+            )}
+        </Box>
     );
-};
+}
 
 export default UserDetailsView;

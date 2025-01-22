@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import {Link, useNavigate} from "react-router-dom";
 import {loginUser} from "../services/AuthService";
+import {Alert, Box, TextField, Typography} from "@mui/material";
+import {Button} from "reactstrap";
 
 function LoginComponent() {
     const [userDetails, setUserDetails] = useState({
@@ -43,40 +45,48 @@ function LoginComponent() {
     };
 
     return (
-        <div className="container mt-5">
-            <h2 className="text-center">Login</h2>
-            <form className="mt-4" onSubmit={handleLogin}>
-                <div className="form-group mb-3">
-                    <label>Username</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        name="username"
-                        value={userDetails.username}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div className="form-group mb-3">
-                    <label>Password</label>
-                    <input
-                        type="password"
-                        className="form-control"
-                        name="password"
-                        value={userDetails.password}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                {error && <div className="alert alert-danger">{error}</div>}
-                <button type="submit" className="btn btn-primary w-100">
+        <Box sx={{ maxWidth: 400, mx: "auto", mt: 8, p: 4, borderRadius: 2, boxShadow: 3 }}>
+            <Typography variant="h4" align="center" gutterBottom>
+                Login
+            </Typography>
+            <form onSubmit={handleLogin}>
+                <TextField
+                    label="Username"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    name="username"
+                    value={userDetails.username}
+                    onChange={handleChange}
+                    required
+                />
+                <TextField
+                    label="Password"
+                    variant="outlined"
+                    type="password"
+                    fullWidth
+                    margin="normal"
+                    name="password"
+                    value={userDetails.password}
+                    onChange={handleChange}
+                    required
+                />
+                {error && (
+                    <Alert severity="error" sx={{ mt: 2 }}>
+                        {error}
+                    </Alert>
+                )}
+                <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 3 }}>
                     Login
-                </button>
+                </Button>
             </form>
-            <div className="mt-3">
-                <span>Not registered? <Link to="/register">Register here</Link></span>
-            </div>
-        </div>
+            <Typography variant="body2" align="center" sx={{ mt: 2 }}>
+                Not registered?{" "}
+                <Link to="/register" underline="hover">
+                    Register here
+                </Link>
+            </Typography>
+        </Box>
     );
 }
 

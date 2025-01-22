@@ -7,7 +7,7 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
 const FooterComponent = () => {
     return (
-        <footer style={{ backgroundColor: '#1976d2', color: '#fff', padding: '20px 0' }}>
+        <footer style={{ backgroundColor: '#1976d2', color: '#fff', padding: '20px 0', marginTop: 50 }}>
             <Container maxWidth="lg">
                 <Grid container spacing={4}>
                     {/* Column 1: App Description */}

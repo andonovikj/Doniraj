@@ -17,6 +17,9 @@ import RegisterComponent from "./components/RegisterComponent";
 import LoginComponent from "./components/LoginComponent";
 import ItemDetailsView from "./views/ItemDetailsView";
 import UserDetailsView from "./views/UserDetailsView";
+import AboutUsComponent from "./components/static/AboutUsComponent";
+import ContactComponent from "./components/static/ContactComponent";
+import FaqComponent from "./components/static/FaqComponent";
 
 const ApplicationRouting = () => {
 return (
@@ -138,6 +141,23 @@ return (
             <Route
                 path="/login"
                 element={<LoginComponent/> }>
+            </Route>
+
+            {/* ---------------------- STATIC ROUTES ---------------------- */}
+
+            <Route
+                path="/about"
+                element={<AboutUsComponent/> }>
+            </Route>
+
+            <Route
+                path="/contact"
+                element={<ContactComponent/> }>
+            </Route>
+
+            <Route
+                path="/faq"
+                element={<FaqComponent/> }>
             </Route>
 
         </Routes>

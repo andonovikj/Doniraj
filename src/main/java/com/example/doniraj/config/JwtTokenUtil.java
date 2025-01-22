@@ -1,5 +1,6 @@
 package com.example.doniraj.config;
 
+import com.example.doniraj.models.enums.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -23,9 +24,11 @@ public class JwtTokenUtil {
     //private Long expiration;
 
     // Creates a JWT for a given username
-    public String generateToken(String username) {
+    public String generateToken(String username, Long user_id, Role role) {
         return Jwts.builder()
                 .setSubject(username)
+                .claim("user_id", user_id)  // Add user ID claim
+                .claim("role", role)       // Add role claim
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // Token expires in 10 hours.
                 .signWith(SignatureAlgorithm.HS512, "QWERTY") //  Uses HMAC-SHA512 algorithm and a secret key "QWERTY" to sign the token.

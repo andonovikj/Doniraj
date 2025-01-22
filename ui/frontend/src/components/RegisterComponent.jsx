@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import {createUser} from "../services/AuthService";
 import {getCities} from "../services/CityService";
+import {Alert, Box, TextField, Typography} from "@mui/material";
+import {Button} from "reactstrap";
 
 function RegisterComponent() {
     const [user, setUser] = useState({
@@ -53,105 +55,112 @@ function RegisterComponent() {
     };
 
     return (
-        <div className="container mt-5">
-            <h2 className="text-center">Register</h2>
-            <form className="mt-4" >
-                <div className="form-group mb-3">
-                    <label>Username</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        name="name"
-                        value={user.name}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div className="form-group mb-3">
-                    <label>Email</label>
-                    <input
-                        type="email"
-                        className="form-control"
-                        name="email"
-                        value={user.email}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div className="form-group mb-3">
-                    <label>Password</label>
-                    <input
-                        type="password"
-                        className="form-control"
-                        name="password"
-                        value={user.password}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div className="form-group mb-3">
-                    <label>Phone Number</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        name="phone_number"
-                        value={user.phone_number}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div className="form-group mb-3">
-                    <label>City</label>
-                    <select
-                        className="form-control"
-                        name="city_id"
-                        value={user.city_id}
-                        onChange={handleChange}
-                        required
-                    >
-                        <option value="">-- Select a City --</option>
-                        {cities.map((city) => (
-                            <option key={city.city_id} value={city.city_id}>
-                                {city.name}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                <div className="form-group mb-3">
-                    <label>I am here to:</label>
-                    <div>
-                        <div className="form-check">
-                            <input
-                                type="radio"
-                                className="form-check-input"
-                                name="role"
-                                value="ROLE_DONOR"
-                                checked={user.role === "ROLE_DONOR"} // Set default selection
-                                onChange={handleChange}
-                                required
-                            />
-                            <label className="form-check-label">Donate</label>
-                        </div>
-                        <div className="form-check">
-                            <input
-                                type="radio"
-                                className="form-check-input"
-                                name="role"
-                                value="ROLE_RECIPIENT"
-                                checked={user.role === "ROLE_RECIPIENT"}
-                                onChange={handleChange}
-                            />
-                            <label className="form-check-label">Receive</label>
-                        </div>
-                    </div>
-                </div>
-                {error && <div className="alert alert-danger">{error}</div>}
-                <button type="submit" onClick={handleRegister} className="btn btn-primary w-100">
+        <Box sx={{ maxWidth: 500, mx: "auto", mt: 8, p: 4, borderRadius: 2, boxShadow: 3 }}>
+            <Typography variant="h4" align="center" gutterBottom>
+                Register
+            </Typography>
+            <form onSubmit={handleRegister}>
+                <TextField
+                    label="Username"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    name="name"
+                    value={user.name}
+                    onChange={handleChange}
+                    required
+                />
+                <TextField
+                    label="Email"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    type="email"
+                    name="email"
+                    value={user.email}
+                    onChange={handleChange}
+                    required
+                />
+                <TextField
+                    label="Password"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    type="password"
+                    name="password"
+                    value={user.password}
+                    onChange={handleChange}
+                    required
+                />
+                <TextField
+                    label="Phone Number"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    name="phone_number"
+                    value={user.phone_number}
+                    onChange={handleChange}
+                    required
+                />
+                <TextField
+                    //label="City"
+                    select
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    name="city_id"
+                    value={user.city_id || ""}
+                    onChange={handleChange}
+                    SelectProps={{
+                        native: true,
+                    }}
+                    required
+                >
+                    <option value="">-- Select a City --</option>
+                    {cities.map((city) => (
+                        <option key={city.city_id} value={city.city_id}>
+                            {city.name}
+                        </option>
+                    ))}
+                </TextField>
+                <Typography variant="subtitle1" gutterBottom>
+                    I am here to:
+                </Typography>
+                <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+                    <label>
+                        <input
+                            type="radio"
+                            name="role"
+                            value="ROLE_DONOR"
+                            checked={user.role === "ROLE_DONOR"}
+                            onChange={handleChange}
+                            required
+                        />
+                        Donate
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            name="role"
+                            value="ROLE_RECIPIENT"
+                            checked={user.role === "ROLE_RECIPIENT"}
+                            onChange={handleChange}
+                        />
+                        Receive
+                    </label>
+                </Box>
+                {error && (
+                    <Alert severity="error" sx={{ mt: 2 }}>
+                        {error}
+                    </Alert>
+                )}
+                <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 3 }}>
                     Register
-                </button>
+                </Button>
             </form>
-        </div>
+        </Box>
     );
+
 }
 
 export default RegisterComponent;
