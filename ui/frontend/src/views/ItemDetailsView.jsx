@@ -4,12 +4,27 @@ import { getItem } from '../services/ItemService';
 import { createClaim } from '../services/ClaimService';
 import { Box, Typography, Button, CircularProgress, Grid } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
+import {jwtDecode} from "jwt-decode";
 
 function ItemDetailsView() {
     const [item, setItem] = useState(null);
-    const user_id = localStorage.getItem("user_id");
+    const [userId, setUserId] = useState(null);
     const { id } = useParams();
     const navigator = useNavigate();
+
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            try {
+                const decodedToken = jwtDecode(token);
+                setUserId(decodedToken.user_id);
+            } catch (error) {
+                console.log("Invalid token ", error);
+            }
+
+        }
+    }, []);
 
     useEffect(() => {
         getItem(id)
@@ -26,7 +41,7 @@ function ItemDetailsView() {
             claimDate: '',
             status: 'CREATED',
             item_id: Number(id),
-            recipient_id: Number(user_id)
+            recipient_id: userId
         };
 
         createClaim(claimDto)
