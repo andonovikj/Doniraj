@@ -21,12 +21,18 @@ function ClaimDetailsComponent() {
 
     return (
         <div>
-            <h1 className="text-center">Item Details</h1>
+            <h1 className="text-center">Claim Details</h1>
             <br />
 
             <table className="table table-striped">
                 <thead>
                 <tr>
+                    <td> Claim Id</td>
+                    <td> Claim Date</td>
+                    <td> Claim Status</td>
+                    <td> Claim Item</td>
+                    <td> Claim Recipient</td>
+                    <td> Actions </td>
                 </tr>
                 </thead>
                 <tbody>

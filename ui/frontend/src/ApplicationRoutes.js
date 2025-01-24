@@ -27,33 +27,33 @@ return (
         <Routes>
             <Route
                 path="/"
-                element={ <CityListComponent /> } >
+                element={ <AvailableItems /> } >
             </Route>
             {/* ---------------------- CITY ROUTES ---------------------- */}
             <Route
-                path="/cities"
+                path="/admin/cities"
                 element={ <CityListComponent /> } >
             </Route>
 
             <Route
-                path="/city/:id"
+                path="/admin/city/:id"
                 element={ <CityDetailsComponent/> } >
             </Route>
 
             <Route
-                path="/city/add"
+                path="/admin/city/add"
                 element={ <CityComponent /> } >
             </Route>
 
             <Route
-                path="/city/update/:id"
+                path="/admin/city/update/:id"
                 element={ <CityComponent /> } >
             </Route>
 
             {/* ---------------------- USER ROUTES ---------------------- */}
 
             <Route
-                path="/users"
+                path="/admin/users"
                 element={<UserListComponent/> }>
             </Route>
 
@@ -63,12 +63,12 @@ return (
             </Route>
 
             <Route
-                path="/user/add"
+                path="/admin/user/add"
                 element={<UserComponent/> }>
             </Route>
 
             <Route
-                path="/user/update/:id"
+                path="/admin/user/update/:id"
                 element={<UserComponent/> }>
             </Route>
 
@@ -90,12 +90,12 @@ return (
             ></Route>
 
             <Route
-                path="/item/update/:id"
+                path="/admin/item/update/:id"
                 element={<ItemComponent/> }>
             </Route>
 
             <Route
-                path="/item/add"
+                path="item/add"
                 element={<ItemComponent/> }>
             </Route>
 
@@ -112,22 +112,22 @@ return (
             {/* ---------------------- CLAIM ROUTES ---------------------- */}
 
             <Route
-                path="/claims"
+                path="/admin/claims"
                 element={ <ClaimListComponent/> }
             ></Route>
 
             <Route
-                path="/claim/update/:id"
+                path="/admin/claim/update/:id"
                 element={<ClaimComponent/> }>
             </Route>
 
             <Route
-                path="/claim/add"
+                path="/admin/claim/add"
                 element={<ClaimComponent/> }>
             </Route>
 
             <Route
-                path="/claim/:id"
+                path="/admin/claim/:id"
                 element={<ClaimDetailsComponent/> }>
             </Route>
 
