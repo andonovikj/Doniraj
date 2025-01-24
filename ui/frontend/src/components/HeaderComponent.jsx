@@ -1,20 +1,27 @@
 import React, {useEffect, useState} from 'react';
-import { AppBar, Toolbar, Typography, IconButton, Menu, MenuItem, Button, Box } from '@mui/material';
+import {AppBar, Toolbar, Typography, IconButton, Menu, MenuItem, Button, Box, Link} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import {Link as RouterLink, useNavigate} from 'react-router-dom';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import {logoutUser} from "../services/AuthService";
+import {jwtDecode} from "jwt-decode";
 
 const HeaderComponent = () => {
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+    const [role, setRole] = useState(null);
+
     const navigator = useNavigate();
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        setIsLoggedIn(!!token); // Set true if token exists, false otherwise
+        setIsLoggedIn(!!token);
+        if (token){
+            const decodedToken = jwtDecode(token);
+            setRole(decodedToken.role);
+        }
     }, []);
 
     const handleMenuClick = (event) => {
@@ -77,6 +84,11 @@ const HeaderComponent = () => {
                             <MenuItem onClick={handleMenuClose} component={RouterLink} to="/profile">
                                 Profile
                             </MenuItem>
+                            {role === "ROLE_RECIPIENT" && (
+                                <MenuItem component={RouterLink} to="/recipient/claims" >
+                                    My claims
+                                </MenuItem>
+                            )}
                             <MenuItem onClick={handleLogout}>
                                 Logout
                             </MenuItem>

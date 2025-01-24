@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import {deleteClaim, getClaims} from "../../services/ClaimService";
 import {Button, ButtonGroup, Container} from "reactstrap";
+import {jwtDecode} from "jwt-decode";
 
 function ClaimListComponent() {
 
@@ -74,11 +75,11 @@ function ClaimListComponent() {
                                 <td> {claim.item.name}</td>
                                 <td> {claim.recipient.name}</td>
                                 <td>
-                                    <ButtonGroup>
-                                        <Button size="sm" color="primary" className="m-1" onClick={() => viewClaim(claim.claim_id)}>View</Button>
-                                        <Button size="sm" color="secondary" className="m-1" onClick={() => editClaim(claim.claim_id)} >Edit</Button>
-                                        <Button size="sm" color="danger" className="m-1" onClick={() => removeClaim(claim.claim_id)}>Delete</Button>
-                                    </ButtonGroup>
+                                        <ButtonGroup>
+                                            <Button size="sm" color="primary" className="m-1" onClick={() => viewClaim(claim.claim_id)}>View</Button>
+                                            <Button size="sm" color="secondary" className="m-1" onClick={() => editClaim(claim.claim_id)} >Edit</Button>
+                                            <Button size="sm" color="danger" className="m-1" onClick={() => removeClaim(claim.claim_id)}>Delete</Button>
+                                        </ButtonGroup>
                                 </td>
                             </tr>
                     )

@@ -20,6 +20,7 @@ import UserDetailsView from "./views/UserDetailsView";
 import AboutUsComponent from "./components/static/AboutUsComponent";
 import ContactComponent from "./components/static/ContactComponent";
 import FaqComponent from "./components/static/FaqComponent";
+import RecipientClaimListView from "./views/RecipientClaimListView";
 
 const ApplicationRouting = () => {
 return (
@@ -119,6 +120,11 @@ return (
             <Route
                 path="/admin/claims"
                 element={ <ClaimListComponent/> }
+            ></Route>
+
+            <Route
+                path="/recipient/claims"
+                element={ <RecipientClaimListView/> }
             ></Route>
 
             <Route
