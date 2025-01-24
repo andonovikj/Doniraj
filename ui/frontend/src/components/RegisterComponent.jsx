@@ -2,8 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import {createUser} from "../services/AuthService";
 import {getCities} from "../services/CityService";
-import {Alert, Box, TextField, Typography} from "@mui/material";
-import {Button} from "reactstrap";
+import {Alert, Box, Checkbox, FormControlLabel, Link, TextField, Typography} from "@mui/material";
+import {Button, Container} from "reactstrap";
 
 function RegisterComponent() {
     const [user, setUser] = useState({
@@ -14,14 +14,10 @@ function RegisterComponent() {
         phone_number: null,
         city_id: null
     });
-    // const [name, setName] = useState('');
-    // const [email, setEmail] = useState('');
-    // const [phone_number, setPhone_number] = useState(null);
-    // const [city_id, setCity_id] = useState(null);
-    // const [password, setPassword] = useState('');
     const [cities, setCities] = useState([]);
     const [error, setError] = useState("");
     const navigator = useNavigate();
+    const [termsAccepted, setTermsAccepted] = useState(false);
 
     useEffect( () => {
         getAllCities();
@@ -43,6 +39,12 @@ function RegisterComponent() {
 
     const handleRegister = (e) => {
         e.preventDefault();
+
+        if (!termsAccepted) {
+            setError("You must accept the Terms and Conditions to register.");
+            return;
+        }
+
         const { name, email, password, phone_number, city_id, role } = user;
 
         createUser(user).then((response) => {
@@ -52,6 +54,10 @@ function RegisterComponent() {
             console.error("Error registering user:", error.response?.data || error);
             setError(error.response?.data?.message || "Registration failed.");
         })
+    };
+
+    const handleCheckboxChange = (e) => {
+        setTermsAccepted(e.target.checked);
     };
 
     return (
@@ -148,6 +154,26 @@ function RegisterComponent() {
                         />
                         Receive
                     </label>
+
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={termsAccepted}
+                                onChange={handleCheckboxChange}
+                                name="termsAccepted"
+                                color="primary"
+                            />
+                        }
+                        label={
+                            <Typography variant="body2">
+                                I have read and accept the{" "}
+                                <Link href="/terms-and-conditions" target="_blank" rel="noopener">
+                                    Terms and Conditions
+                                </Link>.
+                            </Typography>
+                        }
+                    />
+
                 </Box>
                 {error && (
                     <Alert severity="error" sx={{ mt: 2 }}>

@@ -21,6 +21,7 @@ import AboutUsComponent from "./components/static/AboutUsComponent";
 import ContactComponent from "./components/static/ContactComponent";
 import FaqComponent from "./components/static/FaqComponent";
 import RecipientClaimListView from "./views/RecipientClaimListView";
+import TermsAndConditionsComponent from "./components/static/TermsAndConditionsComponent";
 
 const ApplicationRouting = () => {
 return (
@@ -169,6 +170,11 @@ return (
             <Route
                 path="/faq"
                 element={<FaqComponent/> }>
+            </Route>
+
+            <Route
+                path="//terms-and-conditions"
+                element={<TermsAndConditionsComponent/> }>
             </Route>
 
         </Routes>

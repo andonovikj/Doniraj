@@ -65,6 +65,7 @@ const HeaderComponent = () => {
                 <Button color="inherit" component={RouterLink} to="/about">About Us</Button>
                 <Button color="inherit" component={RouterLink} to="/contact">Contact Us</Button>
                 <Button color="inherit" component={RouterLink} to="/faq">FAQ</Button>
+                <Button color="inherit" component={RouterLink} to="/terms-and-conditions">Terms and Conditions</Button>
                 {!isLoggedIn && (
                     <>
                     <Button color="inherit" component={RouterLink} to="/register">Register</Button>
