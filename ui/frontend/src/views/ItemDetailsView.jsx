@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import {Link as RouterLink, useParams} from 'react-router-dom';
 import { getItem } from '../services/ItemService';
 import { createClaim } from '../services/ClaimService';
 import { Box, Typography, Button, CircularProgress, Grid } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import {jwtDecode} from "jwt-decode";
+import AlertDialogSlide from "../components/AlertDialogSlide";
 
 function ItemDetailsView() {
+
     const [item, setItem] = useState(null);
     const [userId, setUserId] = useState(null);
+    const [dialogOpen, setDialogOpen] = useState(false);
     const { id } = useParams();
-    const navigator = useNavigate();
 
 
     useEffect(() => {
@@ -46,8 +48,10 @@ function ItemDetailsView() {
 
         createClaim(claimDto)
             .then(() => {
-                alert("Item claimed successfully!");
-                navigator('/items');
+                //alert("Item claimed successfully!");
+                console.log("Item claimed successfully!");
+                setDialogOpen(true);
+                //navigator('/items');
             })
             .catch((error) => {
                 console.error("Error claiming item:", error);
@@ -103,6 +107,8 @@ function ItemDetailsView() {
                     <CircularProgress />
                 </Box>
             )}
+            {/* AlertDialogSlide */}
+            <AlertDialogSlide open={dialogOpen} onClose={() => setDialogOpen(false)} />
         </Box>
     );
 }
