@@ -57,7 +57,8 @@ public class ItemServiceImpl implements ItemService {
         // find and add user
 
         User donor = userService.getById(itemdto.getUser_id());
-        Item item = new Item(itemdto.getName(), itemdto.getDescription(), LocalDate.now(), itemdto.getStatus(), donor, city);
+        ItemStatus status = ItemStatus.AVAILABLE;
+        Item item = new Item(itemdto.getName(), itemdto.getDescription(), LocalDate.now(), status, donor, city);
 
         return itemRepository.save(item);
     }

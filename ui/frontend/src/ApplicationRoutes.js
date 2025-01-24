@@ -89,13 +89,18 @@ return (
                 element={ <AvailableItems/> }
             ></Route>
 
+            {/*<Route*/}
+            {/*    path="/item/add"*/}
+            {/*    element={<UserCreateItemView/> }>*/}
+            {/*</Route>*/}
+
             <Route
                 path="/admin/item/update/:id"
                 element={<ItemComponent/> }>
             </Route>
 
             <Route
-                path="item/add"
+                path="/item/add"
                 element={<ItemComponent/> }>
             </Route>
 

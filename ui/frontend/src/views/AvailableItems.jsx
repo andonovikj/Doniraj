@@ -61,6 +61,12 @@ function AvailableItems() {
                     </Grid>
                 )}
             </Grid>
+            <Button
+                variant="contained"
+                color="secondary"
+                sx = {{marginTop: 5, justifyContent: 'center'}}
+                onClick={() => navigator(`/item/add`)}
+            >Donate an item!</Button>
         </Box>
     );
 }

@@ -1,22 +1,50 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigate, useParams} from "react-router-dom";
-import {createUser, getUser, getUsers, updateUser} from "../../services/UserService";
+import {getUsers} from "../../services/UserService";
 import {getCities} from "../../services/CityService";
 import {createItem, getItem, updateItem} from "../../services/ItemService";
+import {
+    Box,
+    Card,
+    CardContent,
+    TextField,
+    Select,
+    MenuItem,
+    FormControl,
+    InputLabel,
+    Button,
+    Typography,
+} from '@mui/material';
+import {jwtDecode} from "jwt-decode";
 
 function ItemComponent() {
 
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
-    const [status, setStatus] = useState('');
     const [city_id, setCity_id] = useState(null);
     const [user_id, setUser_id] = useState(null);
     const [cities, setCities] = useState([]);
     const [users, setUsers] = useState([]);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    const [role, setRole] = useState(null);
+    const [loggedInUserId, setLoggedInUserId] = useState(null);
 
     const navigator = useNavigate();
 
     const { id } = useParams();
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        setIsLoggedIn(!!token);
+
+        if (token){
+            const decodedToken = jwtDecode(token);
+            setRole(decodedToken.role);
+            setLoggedInUserId(decodedToken.user_id);
+        }
+    }, []);
+
 
     function pageTitle() {
         if (id) {
@@ -57,7 +85,6 @@ function ItemComponent() {
             getItem(id).then((response) => {
                 setName(response.data.name);
                 setDescription(response.data.description);
-                setStatus(response.data.status);
                 setCity_id(response.data.city_id);
                 setUser_id(response.data.user_id);
             }).catch(error => {
@@ -68,8 +95,7 @@ function ItemComponent() {
 
     const [errors, setErrors] = useState({
         name: '',
-        description: '',
-        status: ''
+        description: ''
     })
 
     function saveOrUpdateItem(e) {
@@ -77,7 +103,8 @@ function ItemComponent() {
 
         if (validateForm())
         {
-            const item = {name, description, status, city_id, user_id};
+            const item = {name, description, city_id, user_id};
+
             console.log(item);
 
             if (id)
@@ -104,8 +131,7 @@ function ItemComponent() {
 
         const fields = {
             name: name.trim(),
-            description: description.trim(),
-            status: status.trim()
+            description: description.trim()
         };
 
         Object.keys(fields).forEach((field) => {
@@ -134,85 +160,96 @@ function ItemComponent() {
     return (
         <div className="container">
             <div className="row mt-5">
-                <div className="card col-md-6 offset-md-3">
-                    {
-                        pageTitle()
-                    }
-                    <div className="card-body">
-                        <form>
-                            <div className="form-group mb-2">
-                                <label className="form-label">Item Name:</label>
-                                <input
-                                    type="text"
-                                    placeholder="Enter Item name"
-                                    name="name"
-                                    value={name}
-                                    className={`form-control ${ errors.name ? 'is-invalid' : ''} `}
-                                    onChange={(e) => setName(e.target.value)}
-                                >
-                                </input>
-                                { errors.name && <div className="invalid-feedback">{ errors.name }</div> }
-                            </div>
-                            <div className="form-group mb-2">
-                                <label className="form-label">Item Description:</label>
-                                <input
-                                    type="text"
-                                    placeholder="Enter Item Description"
-                                    name="description"
-                                    value={description}
-                                    className={`form-control ${errors.description ? 'is-invalid' : ''}`}
-                                    onChange={(e) => setDescription(e.target.value)}
-                                />
-                                {errors.description && <div className="invalid-feedback">{errors.description}</div>}
-                            </div>
-                            <div className="form-group mb-2">
-                                <label className="form-label">Status:</label>
-                                <select
-                                    name="status"
-                                    value={status}
-                                    className={`form-control ${errors.status ? 'is-invalid' : ''}`}
-                                    onChange={(e) => setStatus(e.target.value)}
-                                >
-                                    <option value="">Select Status</option>
-                                    <option value="AVAILABLE">Available</option>
-                                    <option value="CLAIMED">Claimed</option>
-                                </select>
-                                {errors.status && <div className="invalid-feedback">{errors.status}</div>}
-                            </div>
-                            <div className="form-group mb-2">
-                                <label className="form-label">City:</label>
-                                <select
-                                    value={city_id || ''}
-                                    onChange={(e) => setCity_id(Number(e.target.value))}
-                                    className={`form-control ${errors.city ? 'is-invalid' : ''}`}
-                                >
-                                    <option value="">-- Select City --</option>
-                                    {cities.map(cityOption => (
-                                        <option key={cityOption.city_id} value={cityOption.city_id}>
-                                            {cityOption.name}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                            <div className="form-group mb-2">
-                                <label className="form-label">Donor:</label>
-                                <select
-                                    value={user_id || ''} // Bind the value to the current city
-                                    onChange={(e) => setUser_id(Number(e.target.value))} // Update the city state on change
-                                    className={`form-control ${errors.user_id ? 'is-invalid' : ''}`} // Optional error handling
-                                >
-                                    <option value="">-- Select User --</option>
-                                    {users.map(userOption => (
-                                        <option key={userOption.user_id} value={userOption.user_id}>
-                                            {userOption.name}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                            <button className='btn btn-success' onClick={saveOrUpdateItem}>Submit</button>
-                        </form>
-                    </div>
-                </div>
+                {!isLoggedIn && (
+                    <Typography
+                        variant='h5'
+                        component="div"
+                        sx={{ justifyContent: 'center' }}
+                    >We appreciate your kindness. We kindly ask you to log in to donate an item. </Typography>
+                )}
+                {isLoggedIn && (
+                    <>
+                        <Card sx={{ maxWidth: 600, margin: '0 auto', padding: 2, mt: 4 }}>
+                            <CardContent>
+                                <Typography variant="h5" component="div" gutterBottom>
+                                    {pageTitle()}
+                                </Typography>
+                                <form>
+                                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                                        <TextField
+                                            label="Item Name"
+                                            variant="outlined"
+                                            placeholder="Enter Item name"
+                                            value={name}
+                                            onChange={(e) => setName(e.target.value)}
+                                            error={!!errors.name}
+                                            helperText={errors.name}
+                                            fullWidth
+                                        />
+                                        <TextField
+                                            label="Item Description"
+                                            variant="outlined"
+                                            placeholder="Enter Item Description"
+                                            value={description}
+                                            onChange={(e) => setDescription(e.target.value)}
+                                            error={!!errors.description}
+                                            helperText={errors.description}
+                                            fullWidth
+                                        />
+                                        <FormControl fullWidth variant="outlined" error={!!errors.city}>
+                                            <InputLabel>City</InputLabel>
+                                            <Select
+                                                value={city_id || ''}
+                                                onChange={(e) => setCity_id(Number(e.target.value))}
+                                                label="City"
+                                            >
+                                                <MenuItem value="">-- Select City --</MenuItem>
+                                                {cities.map((cityOption) => (
+                                                    <MenuItem key={cityOption.city_id} value={cityOption.city_id}>
+                                                        {cityOption.name}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                        <FormControl fullWidth variant="outlined" error={!!errors.user_id}>
+                                            <InputLabel>Donor</InputLabel>
+                                            <Select
+                                                value={user_id || ''}
+                                                onChange={(e) => setUser_id(Number(e.target.value))}
+                                                label="Donor"
+                                            >
+                                                {role === "ROLE_ADMIN" && (
+                                                    <>
+                                                        <MenuItem value="">-- Select User --</MenuItem>
+                                                        {users.map((userOption) => (
+                                                            <MenuItem key={userOption.user_id} value={userOption.user_id}>
+                                                                {userOption.name}
+                                                            </MenuItem>
+                                                        ))}
+                                                    </>
+                                                )}
+                                                {role === "ROLE_DONOR" && (
+                                                    <MenuItem key={loggedInUserId} value={loggedInUserId}>
+                                                        {users.find((user) => user.user_id === loggedInUserId)?.name || 'Your Name'}
+                                                    </MenuItem>
+                                                )}
+                                            </Select>
+                                        </FormControl>
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            onClick={saveOrUpdateItem}
+                                            fullWidth
+                                        >
+                                            Submit
+                                        </Button>
+                                    </Box>
+                                </form>
+                            </CardContent>
+                        </Card>
+                    </>
+                )}
+
             </div>
         </div>
     );
