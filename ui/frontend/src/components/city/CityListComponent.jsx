@@ -26,7 +26,7 @@ const CityListComponent = () => {
 
     const [cities, setCities] = useState([]);
 
-    const [newCityId, setNewCityId] = useState(null);
+    const [replacementCities, setReplacementCities] = useState([]);
 
     const navigator = useNavigate();
 
@@ -56,16 +56,28 @@ const CityListComponent = () => {
         navigator(`/city/update/${id}`);
     }
 
-    function removeCity(id, newCityId) {
-        console.log("removed city");
+    function removeCity(id) {
+        const newCityId = replacementCities[id]; // Get the replacement city for the specific row
+        if (!newCityId) {
+            alert("Please select a replacement city before deleting.");
+            return;
+        }
+        // Replacement city for the specific row
         const params = newCityId ? { newCityId } : {};
         deleteCity(id, params).then((response) => {
+            console.log("removed city");
             getAllCities();
         }).catch(error => {
             console.log(error);
         })
     }
 
+    const handleReplacementCityChange = (cityId, value) => {
+        setReplacementCities((prev) => ({
+            ...prev,
+            [cityId]: value,
+        }));
+    };
     // TODO: consistency with async await
         return (
             <Container>
@@ -110,16 +122,22 @@ const CityListComponent = () => {
                                                 </IconButton>
                                             </Grid>
                                             <Grid item>
+                                                {/* The key is the ID of a city to be deleted,
+                                                     and the value is the ID of the replacement city chosen for that row */}
                                                 <Select
-                                                    value={newCityId}
-                                                    onChange={(e) => setNewCityId(e.target.value)}
+                                                    value={replacementCities[city.city_id] || ""}
+                                                    onChange={(e) =>
+                                                        handleReplacementCityChange(city.city_id, e.target.value)
+                                                    }
                                                     displayEmpty
                                                     size="small"
                                                 >
                                                     <MenuItem value="">
                                                         <em>-- Select Replacement City --</em>
                                                     </MenuItem>
-                                                    {cities.map((option) => (
+                                                    {cities
+                                                        .filter((option) => option.city_id !== city.city_id) // Exclude the current city from the list
+                                                        .map((option) => (
                                                         <MenuItem key={option.city_id} value={option.city_id}>
                                                             {option.name}
                                                         </MenuItem>
@@ -129,7 +147,7 @@ const CityListComponent = () => {
                                             <Grid item>
                                                 <IconButton
                                                     color="error"
-                                                    onClick={() => removeCity(city.city_id, newCityId)}
+                                                    onClick={() => removeCity(city.city_id)}
                                                 >
                                                     <DeleteIcon />
                                                 </IconButton>

@@ -71,7 +71,7 @@ public class CityServiceImpl implements CityService {
         // find potential Item fk constraints
         List<Item> deleteCityItems = itemCityService.findItemsByCity(cityToDelete);
 
-        // find potential User fk constaints
+        // find potential User fk constants
         List<User> deleteCityUsers = userRepository.findByCity(cityToDelete);
 
         // if there are none, the city can be safely deleted

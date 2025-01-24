@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/city")
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class CityController {
     private final CityService cityService;
 
