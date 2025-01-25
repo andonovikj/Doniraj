@@ -32,8 +32,6 @@ public class User implements UserDetails{
 
     private String password;
 
-    //TODO: ADD TO FAVORITES
-
     private Integer phone_number;
 
     @Enumerated(value = EnumType.STRING)

@@ -49,7 +49,7 @@ public class AuthServiceImpl implements AuthService {
     public User register(UserDto userDto) {
         if (userDto.getName()==null || userDto.getName().isEmpty()  || userDto.getPassword()==null || userDto.getPassword().isEmpty())
             throw new InvalidUsernameOrPasswordException();
-        // TODO ADD ATTRIBUTE REPEATPASSWORD IN USER ENTITY
+
         //if (!password.equals(repeatPassword))
         //    throw new PasswordsDoNotMatchException();
         User user = userRepository.findByName(userDto.getName());

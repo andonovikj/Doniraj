@@ -78,7 +78,6 @@ const CityListComponent = () => {
             [cityId]: value,
         }));
     };
-    // TODO: consistency with async await
         return (
             <Container>
                 <Typography variant="h4" sx={{ mt: 2 }}align="center" gutterBottom>

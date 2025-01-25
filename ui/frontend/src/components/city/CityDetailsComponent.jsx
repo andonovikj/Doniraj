@@ -40,9 +40,8 @@ const CityDetailsComponent = () =>  {
                         <td>
 
                             <ButtonGroup>
-                                <Button size="sm" color="secondary" onClick={() => navigator(`/city/update/${city.city_id}`)}>Edit</Button>
-                                {/* TODO: delete button make api call through service*/}
-                                <Button size="sm" color="danger" onClick={() => navigator(`/city/delete/${city.city_id}`)}>Delete</Button>
+                                <Button size="sm" color="secondary" onClick={() => navigator(`/admin/city/update/${city.city_id}`)}>Edit</Button>
+                                <Button size="sm" color="danger" onClick={() => navigator(`/admin/city/delete/${city.city_id}`)}>Delete</Button>
                             </ButtonGroup>
 
                         </td>
