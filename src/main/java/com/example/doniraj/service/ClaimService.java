@@ -5,7 +5,10 @@ import com.example.doniraj.models.DTO.ClaimDto;
 import com.example.doniraj.models.Item;
 import com.example.doniraj.models.User;
 import com.example.doniraj.models.enums.ClaimStatus;
+import jakarta.mail.MessagingException;
 
+import javax.mail.SendFailedException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 public interface ClaimService {

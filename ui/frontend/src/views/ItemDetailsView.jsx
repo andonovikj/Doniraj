@@ -48,7 +48,6 @@ function ItemDetailsView() {
 
         createClaim(claimDto)
             .then(() => {
-                //alert("Item claimed successfully!");
                 console.log("Item claimed successfully!");
                 setDialogOpen(true);
                 //navigator('/items');
@@ -108,7 +107,7 @@ function ItemDetailsView() {
                 </Box>
             )}
             {/* AlertDialogSlide */}
-            <AlertDialogSlide open={dialogOpen} onClose={() => setDialogOpen(false)} />
+            <AlertDialogSlide open={dialogOpen} onClose={() => setDialogOpen(false)} item = {item} />
         </Box>
     );
 }

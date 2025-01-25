@@ -9,6 +9,11 @@ import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
 import EmailIcon from "@mui/icons-material/Email";
 import {Link as RouterLink, useNavigate} from "react-router-dom";
+import {Box, Checkbox, Typography} from "@mui/material";
+import {useEffect, useState} from "react";
+import {getItem} from "../services/ItemService";
+import {getUser} from "../services/UserService";
+import {CheckBoxOutlineBlankRounded, CheckCircle, CheckCircleOutlineTwoTone, SearchOutlined} from "@mui/icons-material";
 
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & {
@@ -19,7 +24,7 @@ const Transition = React.forwardRef(function Transition(
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-function AlertDialogSlide({ open, onClose }) {
+function AlertDialogSlide({ open, onClose, item }) {
     //const [open, setOpen] = React.useState(false);
 
     //const navigator = useNavigate();
@@ -42,15 +47,44 @@ function AlertDialogSlide({ open, onClose }) {
                 onClose={onClose}
                 aria-describedby="alert-dialog-slide-description"
             >
-                <DialogTitle>{"Item claimed successfully!"}</DialogTitle>
+                <DialogTitle justifyContent="center" direction="column"
+                             alignItems="center" fontWeight="bold">{"ITEM CLAIMED SUCCESSFULLY"}<CheckCircleOutlineTwoTone /></DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-slide-description">
-                        Check your e-mail for more information. Thank you for using Doniraj!
+                        Below you can view all the necessary information.
+                        Please contact the donor to collect your item.
+                        Thank you for using Doniraj!
                     </DialogContentText>
+                        <Box sx={{ mt: 2 }}>
+                            {item && (
+                                <>
+                                    <Typography variant="body1">
+                                        <strong>Item:</strong> {item.name}
+                                    </Typography>
+                                    <Typography variant="body1">
+                                        <strong>Donor:</strong> {item.donor.name}, {item.donor.email}, {item.donor.phone_number}
+                                    </Typography>
+                                    <Typography variant="body1">
+                                        <strong>City:</strong> {item.city.name}
+                                    </Typography>
+                                </>)}
+                        </Box>
                 </DialogContent>
                 <DialogActions>
-                    <Button component={RouterLink} to="/items"
-                        onClick={onClose} >Keep browsing</Button>
+                    <Button variant="contained"
+                            color="success"
+                            size="medium"
+                            sx={{
+                                mr: 1,
+                                mb: 1,
+                                "&.MuiButtonBase-root:hover": {
+                                    bgcolor: "transparent"
+                                }
+                            }}
+                            startIcon={<SearchOutlined />}
+                            component={RouterLink}
+                            to="/items"
+                            onClick={onClose} >Keep browsing</Button>
                 </DialogActions>
             </Dialog>
         </React.Fragment>

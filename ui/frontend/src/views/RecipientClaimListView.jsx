@@ -57,7 +57,6 @@ function RecipientClaimListView() {
                     <TableHead>
                         <TableRow>
                             <TableCell><strong>Claim Date</strong></TableCell>
-                            <TableCell><strong>Claim Status</strong></TableCell>
                             <TableCell><strong>Claim Item</strong></TableCell>
                             <TableCell><strong>Claim Recipient</strong></TableCell>
                         </TableRow>
@@ -67,7 +66,6 @@ function RecipientClaimListView() {
                             filteredClaims.map((claim) => (
                                 <TableRow key={claim.id}>
                                     <TableCell>{claim.claimDate}</TableCell>
-                                    <TableCell>{claim.status}</TableCell>
                                     <TableCell>{claim.item.name}</TableCell>
                                     <TableCell>{claim.recipient.name}</TableCell>
                                 </TableRow>

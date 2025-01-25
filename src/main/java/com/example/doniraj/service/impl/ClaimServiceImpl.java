@@ -10,12 +10,15 @@ import com.example.doniraj.models.exception.*;
 import com.example.doniraj.service.EmailService;
 import com.example.doniraj.service.ItemService;
 import com.example.doniraj.service.UserService;
+import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.doniraj.repository.ClaimRepository;
 import com.example.doniraj.service.ClaimService;
 
+import javax.mail.SendFailedException;
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -78,13 +81,11 @@ public class ClaimServiceImpl implements ClaimService {
         Claim claim = new Claim(recipient, item, ClaimStatus.CREATED);
         claim.setClaimDate(LocalDate.now());
 
-        // Send an email to the recipient with the Donor's info
+        /* Send an email to the recipient with the Donor's info
 
-        /*
         User donor = item.getDonor();
 
         String recipientEmail = recipient.getEmail();
-
         emailService.SendMail(recipientEmail,
                 "Claim Confirmation - Donor Information",
                 String.format("\"Hello %s,\\n\\nYou have claimed an item. " +
