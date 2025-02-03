@@ -4,8 +4,12 @@ import com.example.doniraj.models.enums.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Value;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import javax.crypto.SecretKey;
+import java.util.Base64;
 
 import java.util.Date;
 import java.util.function.Function;
@@ -17,11 +21,12 @@ import java.util.function.Function;
 @Component
 public class JwtTokenUtil {
 
-    //@Value("${jwt.secret}")
-    //private String secret;
+    private final SecretKey secretKey;
 
-    //@Value("${jwt.expiration}")
-    //private Long expiration;
+    @Autowired
+    public JwtTokenUtil() {
+        this.secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512); // Secure key;
+    }
 
     // Creates a JWT for a given username
     public String generateToken(String username, Long user_id, Role role) {
@@ -30,8 +35,8 @@ public class JwtTokenUtil {
                 .claim("user_id", user_id)  // Add user ID claim
                 .claim("role", role)       // Add role claim
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // Token expires in 10 hours.
-                .signWith(SignatureAlgorithm.HS512, "QWERTY") //  Uses HMAC-SHA512 algorithm and a secret key "QWERTY" to sign the token.
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 )) // Token expires in 30 minutes.
+                .signWith(secretKey)
                 .compact(); // Builds the final token string
     }
 
