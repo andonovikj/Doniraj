@@ -35,7 +35,7 @@ public class JwtTokenUtil {
                 .claim("user_id", user_id)  // Add user ID claim
                 .claim("role", role)       // Add role claim
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 )) // Token expires in 30 minutes.
+                .setExpiration(new Date(System.currentTimeMillis() + 30 * 60 * 1000 )) // Token expires in 30 minutes.
                 .signWith(secretKey)
                 .compact(); // Builds the final token string
     }

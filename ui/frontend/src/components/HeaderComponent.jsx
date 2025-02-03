@@ -21,7 +21,11 @@ const HeaderComponent = () => {
         setIsLoggedIn(!!token);
         if (token){
             const decodedToken = jwtDecode(token);
+            console.log("Decoded Token: ", decodedToken);
             setRole(decodedToken.role);
+        }
+        else{
+            console.log("there is no token")
         }
     }, []);
 
