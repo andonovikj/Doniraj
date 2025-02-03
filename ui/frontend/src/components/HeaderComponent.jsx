@@ -17,6 +17,7 @@ const HeaderComponent = () => {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
+        console.log("Token: ", token);
         setIsLoggedIn(!!token);
         if (token){
             const decodedToken = jwtDecode(token);

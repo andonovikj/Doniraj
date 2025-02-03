@@ -38,7 +38,7 @@ public class SecurityConfig {
         this.authenticationProvider = authenticationProvider;
         this.userService = userService;
     }
-    
+
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> {
@@ -53,7 +53,7 @@ public class SecurityConfig {
                     .build();
         };
     }
-    
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception  {
 
@@ -63,14 +63,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         //.requestMatchers("/api/user/**").hasRole("ADMIN") // Only ADMIN can access /user/** endpoints
                         // TODO: REMOVE THIS BYPASS LINE AFTER IMPLEMENTING AND TESTING UI
-                        .requestMatchers("/**").permitAll()
-                        .requestMatchers("/", "/login", "/register", "/items/**").permitAll() // Public access endpoints
-                        .anyRequest().authenticated() // All other requests require authentication
-                )
-                .formLogin((form) -> form
-                        .permitAll()
-                        .failureUrl("/login?error=BadCredentials")
-                        .defaultSuccessUrl("/", true)
+                        //.requestMatchers("/**").permitAll()
+                        //.requestMatchers("/", "/login", "/register", "/items/**").permitAll() // Public access endpoints
+                        .anyRequest().permitAll() // All other requests require authentication
                 )
                 .logout((logout) -> logout
                         .logoutUrl("/api/auth/logout")
