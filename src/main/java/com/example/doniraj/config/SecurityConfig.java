@@ -5,23 +5,22 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.MapReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.header.writers.XXssProtectionHeaderWriter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Arrays;
 
@@ -31,11 +30,17 @@ import java.util.Arrays;
 public class SecurityConfig {
     private final CustomUsernamePasswordAuthenticationProvider authenticationProvider;
 
+    //private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    private final JwtTokenUtil jwtTokenUtil;
+
     private final UserService userService;
 
 
-    public SecurityConfig(CustomUsernamePasswordAuthenticationProvider authenticationProvider, UserService userService) {
+    public SecurityConfig(CustomUsernamePasswordAuthenticationProvider authenticationProvider, JwtTokenUtil jwtTokenUtil, UserService userService) {
         this.authenticationProvider = authenticationProvider;
+        this.jwtTokenUtil = jwtTokenUtil;
+        //this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.userService = userService;
     }
 
@@ -49,10 +54,16 @@ public class SecurityConfig {
             return org.springframework.security.core.userdetails.User
                     .withUsername(user.getUsername())
                     .password(user.getPassword())
-                    .roles(String.valueOf(user.getAuthorities()))
+                    //.roles(String.valueOf(user.getAuthorities()))
+                    .authorities(user.getAuthorities())
                     .build();
         };
     }
+
+//    @Bean
+//    GrantedAuthorityDefaults grantedAuthorityDefaults() {
+//        return new GrantedAuthorityDefaults(""); // Remove the ROLE_ prefix
+//    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception  {
@@ -60,13 +71,14 @@ public class SecurityConfig {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable) // Disable CSRF for simplicity (enable it in production with proper configuration)
-                .authorizeHttpRequests(auth -> auth
-                        //.requestMatchers("/api/user/**").hasRole("ADMIN") // Only ADMIN can access /user/** endpoints
-                        // TODO: REMOVE THIS BYPASS LINE AFTER IMPLEMENTING AND TESTING UI
-                        //.requestMatchers("/**").permitAll()
-                        //.requestMatchers("/", "/login", "/register", "/items/**").permitAll() // Public access endpoints
-                        .anyRequest().permitAll() // All other requests require authentication
-                )
+                .authorizeHttpRequests(auth -> {
+                    System.out.println("Security check: Checking roles...");
+                    auth
+
+                            .requestMatchers("/", "/api/auth/**", "/api/item/all/available").permitAll() // Public access endpoints
+                            .requestMatchers("/api/user/**").hasAuthority("ROLE_ADMIN") // Only ADMIN can access /user/** endpoints
+                            .anyRequest().authenticated(); // All other requests require authentication
+                })
                 .logout((logout) -> logout
                         .logoutUrl("/api/auth/logout")
                         .clearAuthentication(true)
@@ -80,7 +92,10 @@ public class SecurityConfig {
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Only create a session when required
-                );
+                )
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        ;
 
         //TODO LOOK INTO STORED XSS ATTACK
         http.headers(headers ->
@@ -94,6 +109,11 @@ public class SecurityConfig {
         );
 
         return http.build();
+    }
+
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter(jwtTokenUtil);
     }
 
 //    @Bean

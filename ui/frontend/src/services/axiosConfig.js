@@ -12,7 +12,10 @@ without needing to repeatedly specify our full backend URL
 
 const instance = axios.create({
     baseURL: 'http://localhost:8080/api',
-    withCredentials: true
+    withCredentials: true,
+    // headers: {
+    //     Authorization: `Bearer ${localStorage.getItem("token")}`
+    // }
 });
 
 export default instance;

@@ -15,15 +15,15 @@ INSERT INTO city (zipcode, city_id, name)
 VALUES (4400, 5, 'Berovo');
 
 INSERT INTO users (phone_number, city_id, user_id, email, name, password, role)
-VALUES (123456789, 1, 1, 'john_doe@hotmail.com', 'John Doe', 'password123', 'ROLE_DONOR');
+VALUES (123456789, 1, 1, 'john_doe@hotmail.com', 'John Doe', 'password123', 'DONOR');
 INSERT INTO users (phone_number, city_id, user_id, email, name, password, role)
-VALUES (456789123, 2, 2, 'james_smith@gmail.com', 'James Smith', 'password456', 'ROLE_RECIPIENT');
+VALUES (456789123, 2, 2, 'james_smith@gmail.com', 'James Smith', 'password456', 'RECIPIENT');
 INSERT INTO users (phone_number, city_id, user_id, email, name, password, role)
-VALUES (789456123, 2, 3, 'maggie_smith@yahoo.com', 'Maggie Smith', 'password789', 'ROLE_DONOR');
+VALUES (789456123, 2, 3, 'maggie_smith@yahoo.com', 'Maggie Smith', 'password789', 'DONOR');
 INSERT INTO users (phone_number, city_id, user_id, email, name, password, role)
-VALUES (999999, 4, 4, 'meredith_gray@gmail.com', 'Meredith Gray', 'password666', 'ROLE_RECIPIENT');
+VALUES (999999, 4, 4, 'meredith_gray@gmail.com', 'Meredith Gray', 'password666', 'RECIPIENT');
 INSERT INTO users (phone_number, city_id, user_id, email, name, password, role)
-VALUES (5555555, 2, 5, 'admin@admin.com', 'admin', 'admin', 'ROLE_ADMIN');
+VALUES (5555555, 2, 5, 'admin@admin.com', 'admin', 'admin', 'ADMIN');
 
 INSERT INTO item (date_created, city_id, donor_id, item_id, description, name, status)
 VALUES ('2024-11-06', 1, 1, 1, 'A warm winter jacket', 'Winter Jacket', 'AVAILABLE');
