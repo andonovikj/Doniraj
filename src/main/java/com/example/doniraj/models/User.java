@@ -1,6 +1,5 @@
 package com.example.doniraj.models;
 
-import com.example.doniraj.models.enums.Role;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -10,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -34,8 +34,10 @@ public class User implements UserDetails{
 
     private Integer phone_number;
 
-    @Enumerated(value = EnumType.STRING)
-    private Role role;
+    //@Enumerated(value = EnumType.STRING)
+    //private Role role;
+
+    private String role;
 
     @ManyToOne
     @JoinColumn(name = "city_id")
@@ -48,7 +50,7 @@ public class User implements UserDetails{
     //@OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL)
     //private List<Claim> claims;
 
-    public User(String name, String email, String password, Integer phone_number, Role role, City city) {
+    public User(String name, String email, String password, Integer phone_number, String role, City city) {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -69,10 +71,24 @@ public class User implements UserDetails{
     @Column(nullable = false, columnDefinition = "boolean default true")
     private boolean isEnabled;
 
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        System.out.println("User role from DB: " + role);
+//        System.out.println("Assigned authority: " + new SimpleGrantedAuthority(role));
+//        return Collections.singletonList(new SimpleGrantedAuthority(role));
+//    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(role);
+        String authority = "ROLE_" + role;  // Double-check if this is causing the problem!
+        System.out.println("User role from DB: " + role);
+        System.out.println("Manually created authority: " + authority);
+        System.out.println("Assigned authority object: " + new SimpleGrantedAuthority(authority));
+
+        return Collections.singletonList(new SimpleGrantedAuthority(authority));
     }
+
+
 
     @Override
     public String getUsername() {

@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {Link, useNavigate} from "react-router-dom";
 import {loginUser} from "../services/AuthService";
 import {Alert, Box, TextField, Typography} from "@mui/material";
 import {Button} from "reactstrap";
+import {getAvailableItems} from "../services/ItemService";
 
 function LoginComponent() {
     const [userDetails, setUserDetails] = useState({
@@ -20,21 +21,13 @@ function LoginComponent() {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        // loginUser(userDetails)
-        //     .then((response) => {
-        //         localStorage.setItem('token', response.data.token);
-        //         console.log("User logged in successfully:", response.data);
-        //         navigate("/items"); // Redirect to the available items page after login
-        //     })
-        //     .catch((error) => {
-        //         console.error("Error logging in user:", error.response?.data || error);
-        //         setError(error.response?.data?.message || "Login failed.");
-        //     });
         try {
             const response = await loginUser(userDetails);
             if (response.data !== 'Invalid credentials') {
                 localStorage.setItem('token', response.data);
                 navigate('/items');
+                window.location.reload();
+
             } else {
                 setError(error.response?.data?.message || "Invalid credentials.");
                 console.log('Invalid credentials');

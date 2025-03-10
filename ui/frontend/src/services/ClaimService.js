@@ -1,7 +1,11 @@
-import instance from "./axiosConfig";
+import {instance} from "./axiosConfig";
 
 export const getClaims = async () => {
     return await instance.get('/claim/all');
+}
+
+export const getClaimsByRecipient = async (recipient_id) => {
+    return await instance.get(`/claim/all/${recipient_id}`);
 }
 
 export const getClaim = async (id) => {

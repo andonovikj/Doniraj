@@ -1,4 +1,4 @@
-import instance from './axiosConfig';
+import {instance} from './axiosConfig';
 
 
     export const getCities = async () => {

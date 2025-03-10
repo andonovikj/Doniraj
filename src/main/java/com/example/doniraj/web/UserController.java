@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,9 +28,17 @@ public class UserController {
     }
 
     // The @PreAuthorize annotation checks the given expression before entering the method
-    //@PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/all")
-    public ResponseEntity<?> getAll(){
+    //@PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getAll(Authentication authentication){
+
+        if (authentication == null) {
+            System.out.println("Authentication is null");
+        } else {
+            System.out.println("Authenticated user: " + authentication.getName());
+            System.out.println("Roles: " + authentication.getAuthorities());
+        }
+
         List<User> users = userService.getUsers();
         if (users.isEmpty())
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

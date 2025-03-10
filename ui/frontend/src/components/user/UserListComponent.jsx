@@ -2,41 +2,69 @@ import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import {Button, ButtonGroup, Container} from "reactstrap";
 import {deleteUser, getAllUsers, getUsers} from "../../services/UserService";
+import {jwtDecode} from "jwt-decode";
 
 const UserListComponent = () => {
 
     const [users, setUsers] = useState([]);
 
+    const [userRole, setUserRole] = useState(null);
+
     const navigator = useNavigate();
 
+    // useEffect(() => {
+    //     getAllUsers();
+    // }, [])
+
     useEffect(() => {
-        getAllUsers();
-    }, [])
+        const token = localStorage.getItem("token"); // Get JWT token from storage
+        if (!token) {
+            //navigator("/"); // Redirect if no token
+            //return;
+        }
+
+        try {
+            const decoded = jwtDecode(token); // Decode JWT
+            if (!decoded.role.includes("ADMIN")) {
+                //navigator("/"); // Redirect if not admin
+            } else {
+                setUserRole(decoded.role); // Store role in state
+                getAllUsers();
+            }
+        } catch (error) {
+            console.error("Invalid token:", error);
+        }
+    }, [navigator]);
 
     function getAllUsers() {
         getUsers().then((response) => {
             setUsers(response.data);
+            console.log("users:" , response.data)
         }).catch(error => {
             console.log(error);
         })
     }
 
     function addNewUser() {
-        navigator('/user/add');
+        navigator('/admin/user/add');
     }
 
     function viewUser(id) {
-        navigator(`/user/${id}`)
+        navigator(`admin/user/${id}`)
     }
 
     function editUser(id) {
-        navigator(`/user/update/${id}`);
+        navigator(`/admin/update/${id}`);
     }
 
     function removeUser(id) {
         deleteUser(id).then((response) => {
             getAllUsers();
         })
+    }
+
+    if (userRole !== "ADMIN") {
+        return <h2>Access Denied</h2>; // Prevent rendering if not an admin
     }
 
     return (

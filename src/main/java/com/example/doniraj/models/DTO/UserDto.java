@@ -1,7 +1,6 @@
 package com.example.doniraj.models.DTO;
 
 import com.example.doniraj.models.City;
-import com.example.doniraj.models.enums.Role;
 import lombok.Data;
 
 @Data
@@ -17,6 +16,6 @@ public class UserDto {
 
     private Long city_id;
 
-    private Role role;
+    private String role;
 
 }

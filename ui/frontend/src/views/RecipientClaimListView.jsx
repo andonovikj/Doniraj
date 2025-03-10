@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getClaims } from "../services/ClaimService";
+import {getClaims, getClaimsByRecipient} from "../services/ClaimService";
 import { jwtDecode } from "jwt-decode";
 import {
     Box,
@@ -15,36 +15,33 @@ import {
 
 function RecipientClaimListView() {
     const [claims, setClaims] = useState([]);
-    const [filteredClaims, setFilteredClaims] = useState([]);
-    const [recipientId, setRecipientId] = useState(null);
+
 
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
             const decodedToken = jwtDecode(token);
-            setRecipientId(decodedToken.user_id); // Save recipient's unique ID
+
+            getClaimsByRecipient(decodedToken.user_id)
+                .then((response) => {
+                    setClaims(response.data);
+                })
+                .catch((error) => {
+                    console.log("Error fetching claims:", error);
+                });
         }
     }, []);
 
-    useEffect(() => {
-        getClaims()
-            .then((response) => {
-                setClaims(response.data);
-            })
-            .catch((error) => {
-                console.log("Error fetching claims:", error);
-            });
-    }, []);
 
     // Filter claims for the logged-in recipient
-    useEffect(() => {
-        if (recipientId) {
-            const recipientClaims = claims.filter(
-                (claim) => claim.recipient.user_id === recipientId
-            );
-            setFilteredClaims(recipientClaims); // Store filtered claims
-        }
-    }, [claims, recipientId]);
+    // useEffect(() => {
+    //     if (recipientId) {
+    //         const recipientClaims = claims.filter(
+    //             (claim) => claim.recipient.user_id === recipientId
+    //         );
+    //         setFilteredClaims(recipientClaims); // Store filtered claims
+    //     }
+    // }, [claims, recipientId]);
 
     return (
         <Box sx={{ padding: 3 }}>
@@ -62,8 +59,8 @@ function RecipientClaimListView() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {filteredClaims.length > 0 ? (
-                            filteredClaims.map((claim) => (
+                        {claims.length > 0 ? (
+                            claims.map((claim) => (
                                 <TableRow key={claim.id}>
                                     <TableCell>{claim.claimDate}</TableCell>
                                     <TableCell>{claim.item.name}</TableCell>
