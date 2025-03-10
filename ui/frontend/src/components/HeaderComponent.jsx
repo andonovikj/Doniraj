@@ -90,7 +90,7 @@ const HeaderComponent = () => {
                             <MenuItem onClick={handleMenuClose} component={RouterLink} to="/profile">
                                 Profile
                             </MenuItem>
-                            {role === "ROLE_RECIPIENT" && (
+                            {role === "RECIPIENT" && (
                                 <MenuItem component={RouterLink} to="/recipient/claims" >
                                     My claims
                                 </MenuItem>

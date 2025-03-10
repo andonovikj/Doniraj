@@ -76,7 +76,9 @@ public class SecurityConfig {
                     auth
 
                             .requestMatchers("/", "/api/auth/**", "/api/item/all/available").permitAll() // Public access endpoints
-                            .requestMatchers("/api/user/**").hasAuthority("ROLE_ADMIN") // Only ADMIN can access /user/** endpoints
+                            .requestMatchers("/api/user/{id}", "/api/item/{id}").hasAnyAuthority("ROLE_DONOR", "ROLE_RECIPIENT", "ROLE_ADMIN")
+                            .requestMatchers("/api/claim/all/{recipient_id}", "/api/claim/add").hasAuthority("ROLE_RECIPIENT")
+                            .requestMatchers("/api/user/**", "/api/city/**", "/api/item/**", "/api/claim/**").hasAuthority("ROLE_ADMIN") // Only ADMIN can access /user/** endpoints
                             .anyRequest().authenticated(); // All other requests require authentication
                 })
                 .logout((logout) -> logout

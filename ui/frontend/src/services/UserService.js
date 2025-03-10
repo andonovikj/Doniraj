@@ -1,10 +1,10 @@
-import instance from './axiosConfig';
+import {instance} from './axiosConfig';
 
 export const getUsers = async() => {
     return instance.get('/user/all', {
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-        }
+        // headers: {
+        //     Authorization: `Bearer ${localStorage.getItem("token")}`
+        // }
     });
 }
 

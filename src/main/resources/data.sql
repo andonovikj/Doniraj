@@ -24,7 +24,7 @@ INSERT INTO users (phone_number, city_id, user_id, email, name, password, role)
 VALUES (999999, 4, 4, 'meredith_gray@gmail.com', 'Meredith Gray', 'password666', 'RECIPIENT');
 INSERT INTO users (phone_number, city_id, user_id, email, name, password, role)
 VALUES (5555555, 2, 5, 'admin@admin.com', 'admin', 'admin', 'ADMIN');
-
+/* TODO DATABASE LOL */
 INSERT INTO item (date_created, city_id, donor_id, item_id, description, name, status)
 VALUES ('2024-11-06', 1, 1, 1, 'A warm winter jacket', 'Winter Jacket', 'AVAILABLE');
 INSERT INTO item (date_created, city_id, donor_id, item_id, description, name, status)

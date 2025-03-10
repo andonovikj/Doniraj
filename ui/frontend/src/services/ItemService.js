@@ -1,4 +1,4 @@
-import instance from "./axiosConfig";
+import {instance} from "./axiosConfig";
 
 export const getItems = async () => {
     return await instance.get('/item/all');
